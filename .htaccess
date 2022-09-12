@@ -1,0 +1,8 @@
+Options -MultiViews
+RewriteEngine On
+
+ErrorDocument 404 /404.html
+
+RewriteRule ^home(.*)?$ index.php
+
+RewriteRule ^logout(.*)?$ apps/sign_out.php
