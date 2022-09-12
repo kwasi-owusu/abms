@@ -1,6 +1,6 @@
 <?php
 
-!isset($_SESSION) ? session_start() : null;
+!isset($_SESSION) ? session_start() : $_SESSION =  null;
 
 date_default_timezone_set("Africa/Accra");
 
@@ -84,9 +84,8 @@ class CTRLSetupAgency
 
             //generate agent key
             $toHashThis         = $agency_name . $agency_phone;
-
-            $agency_hash_key       = AgentEnum::save_agency->value;
-            $agency_key            = hash_hmac('sha512', $toHashThis, $agency_hash_key);
+            $agency_hash_key    = AgentEnum::save_agency->value;
+            $agency_key         = hash_hmac('sha512', $toHashThis, $agency_hash_key);
 
 
             //create agency slug

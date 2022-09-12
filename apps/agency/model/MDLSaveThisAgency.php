@@ -53,11 +53,11 @@ class MDLSaveThisAgency extends ConnectDatabase
 
                             return;
                         } elseif ($file_size > 2000000) {
-                            
+
                             echo "A file exceeds 2MB";
                             return;
                         } elseif ($file_error) {
-                            
+
                             echo "There is an upload error";
                             return;
                         } else {
@@ -84,6 +84,46 @@ class MDLSaveThisAgency extends ConnectDatabase
                         $image_desc
                     )
                 );
+
+                $thisPDO->commit();
+
+                return $stmt;
+            } catch (PDOException $e) {
+                $thisPDO->rollBack();
+                echo "Error";
+            }
+        }
+    }
+
+    public static function updateThisAgencyMDL($data, $table_a, $table_c)
+    {
+
+
+        $newPDO = new ConnectDatabase();
+        $thisPDO = $newPDO->Connect();
+
+        if ($thisPDO->beginTransaction()) {
+            try {
+
+                $stmt = $thisPDO->prepare("UPDATE $table_a SET agency_name = :agency_name, agent_slug = :agent_slug, agency_type = :agency_type, 
+                agency_key = :agency_key, agency_address = :agency_address, agency_phone = :agency_phone, agency_email = :agency_email, 
+                contact_person = :contact_person, contact_person_phone = :contact_person_phone WHERE agency_id = :agency_id");
+
+                $stmt->execute(array(
+                    $data['agency_code'],
+                    $data['parent_agent'],
+                    $data['agency_name'],
+                    $data['agent_slug'],
+                    $data['agent_type'],
+                    $data['agency_key'],
+                    $data['agency_address'],
+                    $data['agent_phone'],
+                    $data['agent_email'],
+                    $data['contact_person'],
+                    $data['contact_person_phone'],
+                    $data['agency_id']
+                ));
+
 
                 $thisPDO->commit();
 
