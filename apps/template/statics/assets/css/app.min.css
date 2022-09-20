@@ -2303,7 +2303,7 @@
   display: none;
 }
 [data-layout="horizontal"] .navbar-nav .nav-item:hover > .nav-link {
-  color: var(--vz-topnav-item-color-active);
+  color: #ffffff;
 }
 [data-layout="horizontal"] .navbar-nav .nav-item:hover > .nav-link .icon-dual {
   color: var(--vz-topnav-item-color-active);
@@ -12704,7 +12704,7 @@ span.flatpickr-weekday {
   background-color: transparent;
 }
 .auth-bg-cover .footer {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 0, 0, 0.86);
 }
 #password-contain {
   display: none;
