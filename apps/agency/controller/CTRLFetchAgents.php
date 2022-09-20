@@ -27,4 +27,37 @@ class CTRLFetchAgents extends MDLFetchAgents
         $this->user_roles               = $user_roles;
         $this->geneal_settings          = $geneal_settings;
     }
+
+    public function ctrl_fetchThisAgent($agency_id, $agency_code, $agency_key){
+        
+        $data = array(
+            'agency_id' => $agency_id,
+            'agency_code' => $agency_code,
+            'agency_key' => $agency_key
+        );
+
+        $fetchRst = new MDLFetchAgents();
+
+        $getRst = $fetchRst->fetchThisAgent($this->agency_setup, $data);
+
+        return $getRst;
+    }
+
+
+    public function ctrl_fetchActiveAgent(){
+
+        $fetch_active_agents = new MDLFetchAgents;
+        $getRst = $fetch_active_agents->fetchActiveAgent($this->agency_setup);
+
+        return $getRst;
+    }
+
+
+    public function ctrl_fetchDeactivatedAgent(){
+
+        $fetch_deactivated_agents = new MDLFetchAgents;
+        $getRst = $fetch_deactivated_agents->fetchDeactivatedAgent($this->agency_setup);
+
+        return $getRst;
+    }
 }

@@ -59,10 +59,27 @@ class CTRLSecureTransaction implements ISecureTransactionInterface
     public function is_transaction_allowed($sec_table_d): int
     {
         
-        $isOfficerActiveRst = new MDLSecureTransaction();
-        $rst    = $isOfficerActiveRst->is_transaction_allowed_mdl($sec_table_d);
+        $isTransactionAllowedRst = new MDLSecureTransaction();
+        $rst    = $isTransactionAllowedRst->is_transaction_allowed_mdl($sec_table_d);
 
         $val = $rst['settings_value'];
+
+        if ($val == '1') {
+
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+
+    public function is_transaction_allowed_for_agent($agent_setup_tbl, $agent_key): int
+    {
+        
+        $isTransactionAllowedForAgentRst = new MDLSecureTransaction();
+        $rst    = $isTransactionAllowedForAgentRst->is_transaction_allowed_for_this_agent_mdl($agent_setup_tbl, $agent_key);
+
+        $val = $rst['allow_transaction'];
 
         if ($val == '1') {
 

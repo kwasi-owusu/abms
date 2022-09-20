@@ -9,7 +9,7 @@ $hash_key           = AuthEnums::secure_form_cors_hash->value;
 
 
 $create_token       = new CTRLSecureLogin();
-$login_token        = $create_token->is_login_has_valid($page_name, $hash_key); 
+$login_token        = $create_token->is_login_hash_valid($page_name, $hash_key);
 $_SESSION['login_tkn'] = $login_token;
 
 ?>
@@ -31,7 +31,7 @@ $_SESSION['login_tkn'] = $login_token;
                                         <div class="position-relative h-100 d-flex flex-column">
                                             <div class="mb-4">
                                                 <a href="javascript:void(0);" class="d-block">
-                                                    <img src="apps/template/statics/assets/images/logo.png" alt="">
+                                                    <img src="apps/template/assets/images/ubalogo.png" alt="" width="100">
                                                 </a>
                                             </div>
                                         </div>
@@ -42,10 +42,13 @@ $_SESSION['login_tkn'] = $login_token;
                                 <div class="col-lg-6">
                                     <div class="p-lg-5 p-4">
                                         <div>
-                                            <h5 class="text-primary">Sign In</h5>
+                                            <h5 class="text-primary">Welcome!</h5>
+                                            <p class="text-muted">Sign in to continue to UBA Agency Management System.
+                                            </p>
                                         </div>
 
                                         <div class="mt-4">
+
                                             <form action="CTRLLoginUser" method="post" name="user_loginForm" class="form-horizontal form" id="user_loginForm" autocomplete="off">
 
                                                 <div class="mb-3">
@@ -58,26 +61,28 @@ $_SESSION['login_tkn'] = $login_token;
                                                     <div class="position-relative auth-pass-inputgroup mb-3">
                                                         <input type="password" class="form-control pe-5" placeholder="Enter password" id="user_password" name="user_password">
                                                         <input type="hidden" class="form-control pe-5" id="tkn" value="<?php echo $login_token; ?>" name="tkn" id="tkn">
+                                                        <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="mt-4">
-                                                    <button class="btn btn-warning w-100" type="submit" id="saveBtn" name="saveBtn">Sign In</button>
+                                                    <button class="btn btn-danger w-100" type="submit" id="saveBtn" name="saveBtn">Sign In</button>
                                                 </div>
 
                                             </form>
+
                                         </div>
 
-                                        <hr />
+                                        <p></p>
 
-                                        <div class="col-12">
-                                            <div class="loader multi-loader mx-auto" style="display: none;" id="loader"></div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="loader multi-loader mx-auto" style="display: none;" id="loader"></div>
+                                            </div>
                                         </div>
 
-                                        <div class="col-12">
-                                            <p id="responseHere"></p>
-                                        </div>
 
+                                        <p id="responseHere"></p>
                                     </div>
                                 </div>
                                 <!-- end col -->
@@ -101,11 +106,11 @@ $_SESSION['login_tkn'] = $login_token;
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="text-center">
-                            <p class="mb-0" style="color: #000;">&copy;
+                            <p class="mb-0">&copy;
                                 <script>
                                     document.write(new Date().getFullYear())
-                                </script> Agency Banking Management System.
-                                Powered by <a class="text-white" href="https://www.bsystemslimited.com" target="_blank" style="color: #000;">Bsystems Limited</a>
+                                </script> UBA Agency Management System.
+                                Designed and Developed by <a class="text-dark" href="https://www.bsystemslimited.com">Bsystems Limited</a>
                             </p>
                         </div>
                     </div>

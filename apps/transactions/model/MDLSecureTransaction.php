@@ -97,6 +97,27 @@ class MDLSecureTransaction extends ConnectDatabase
     }
 
 
+    public function is_transaction_allowed_for_this_agent_mdl($agent_setup_tbl, $agent_key)
+    {
+
+        $newPDO = new ConnectDatabase();
+        $thisPDO = $newPDO->Connect();
+
+        try {
+            $stmt = $thisPDO->prepare("SELECT * FROM $agent_setup_tbl 
+            WHERE agency_key = agk
+            LIMIT 1");
+
+            $stmt->bindValue(':agk', $agent_key, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Request not admitted";
+        }
+    }
+
+
     public function is_transaction_limit_reached_mdl($table_a, $account_number, $account_name)
     {
 

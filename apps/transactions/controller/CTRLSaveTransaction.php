@@ -12,27 +12,27 @@ class CTRLSaveTransactions
 {
 
     //tables
-    private string $table_a;
-    private string $table_b;
-    private string $table_c;
-    private string $table_d;
+    private string $transactions_tbl;
+    private string $user_activities;
+    private string $notifications;
+    private string $agency_branches;
 
-    private string $sec_table_a;
-    private string $sec_table_c;
-    private string $sec_table_d;
+    private string $agency_setup;
+    private string $abms_users;
+    private string $geneal_settings;
 
 
-    function __construct($table_a, $table_b, $table_c, $table_d, $sec_table_a, $sec_table_c, $sec_table_d)
+    function __construct($transactions_tbl, $user_activities, $notifications, $agency_branches, $agency_setup, $abms_users, $geneal_settings)
     {
 
-        $this->table_a = $table_a;
-        $this->table_b = $table_b;
-        $this->table_c = $table_c;
-        $this->table_d = $table_d;
+        $this->transactions_tbl = $transactions_tbl;
+        $this->user_activities = $user_activities;
+        $this->notifications = $notifications;
+        $this->agency_branches = $agency_branches;
 
-        $this->sec_table_a = $sec_table_a;
-        $this->sec_table_c = $sec_table_c;
-        $this->sec_table_d = $sec_table_d;
+        $this->agency_setup = $agency_setup;
+        $this->abms_users = $abms_users;
+        $this->geneal_settings = $geneal_settings;
     }
 
 
@@ -168,11 +168,12 @@ class CTRLSaveTransactions
 
             $to_proceed_with_transaction = null;
 
-            $is_agent_active        = $secure_this_transaction->is_agent_active($this->sec_table_a, $agent_id, $agent_key);
-            $is_branch_active       = $secure_this_transaction->is_branch_active($this->table_d, $agent_id, $agency_branch, $branch_key);
-            $is_officer_active      = $secure_this_transaction->is_officer_active($this->sec_table_c, $agent_id, $officer_id, $user_key);
-            $is_transaction_allowed = $secure_this_transaction->is_transaction_allowed($this->sec_table_d);
-            $is_transaction_limit_reached = $secure_this_transaction->is_transaction_limit_reached($this->table_a, $account_number, $account_name, $current_transaction_limit);
+            $is_agent_active        = $secure_this_transaction->is_agent_active($this->agency_setup, $agent_id, $agent_key);
+            $is_branch_active       = $secure_this_transaction->is_branch_active($this->agency_branches, $agent_id, $agency_branch, $branch_key);
+            $is_officer_active      = $secure_this_transaction->is_officer_active($this->abms_users, $agent_id, $officer_id, $user_key);
+            $is_transaction_allowed = $secure_this_transaction->is_transaction_allowed($this->geneal_settings);
+            $is_transaction_limit_reached = $secure_this_transaction->is_transaction_limit_reached($this->transactions_tbl, $account_number, $account_name, $current_transaction_limit);
+            $is_transaction_allowed_for_agent = $secure_this_transaction->is_transaction_allowed_for_agent($this->agency_setup, $agent_key);
 
 
 
@@ -340,6 +341,39 @@ class CTRLSaveTransactions
 
 
                 return;
+            } elseif ($is_transaction_allowed_for_agent !== 1) {
+
+                $error          = true;
+                $message        = "Sorry, transaction not allowed for now.";
+                $error_code     = 112;
+
+                $response_msg   = array(
+                    'error' => true,
+                    'message' => $message,
+                    'error_code' => $error_code
+                );
+
+                echo json_encode($response_msg);
+
+                //create activity
+                $activities = array(
+                    'actions' => 'Transaction Activity. Transaction revoked for this agent',
+                    'status' => 'Failed',
+                    'usernames' => $officer_id
+                );
+
+                $activity_desc = json_encode($activities);
+
+                $activity_data = array(
+                    'activity_module' => 'User Login',
+                    'activity_desc' => $activity_desc,
+                    'user_id' => $officer_id
+                );
+
+                $save_activities = $login_obj->userActivitiesMDL($activity_data, $this->table_b);
+
+
+                return;
             } elseif ($is_agent_active == 2 && $is_branch_active == 2 && $is_officer_active == 2 && $is_transaction_allowed == 0 && $is_transaction_limit_reached == 0 && !$error) {
 
                 //$to_proceed_with_transaction .= "Yes";
@@ -409,26 +443,21 @@ class CTRLSaveTransactions
                     );
 
                     $save_activities = $login_obj->userActivitiesMDL($activity_data, $this->table_b);
-                }
+                } else {
 
-                else{
-                    
                     $error          = true;
                     $message        = "Transaction Failed";
                     $error_code     = 112;
-        
+
                     $response_msg   = array(
                         'error' => true,
                         'message' => $message,
                         'error_code' => $error_code
                     );
-        
-                    echo json_encode($response_msg);                    
+
+                    echo json_encode($response_msg);
                 }
-                
-                
             }
-            
         } else {
             $error          = true;
             $message        = "Action not permitted";

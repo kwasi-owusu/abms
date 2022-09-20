@@ -2155,7 +2155,7 @@
   background-size: cover;
   background-position: 50%;
   /* opacity: 0.07; */
-  background-color: #ffc52a;
+  background-color: #d70900;
 }
 [data-sidebar-image="img-1"] .sidebar-background {
   background-image: url(../images/sidebar/img-1.jpg);
@@ -2222,20 +2222,20 @@
 }
 [data-layout="horizontal"] .navbar-menu .navbar-nav .nav-sm .nav-link.active,
 [data-layout="horizontal"] .navbar-menu .navbar-nav .nav-sm .nav-link:hover {
-  color: #000;
+  color: #fff;
 }
 [data-layout="horizontal"] .navbar-menu .navbar-nav .nav-link {
-  color: #000;
+  color: #fff;
   padding: 0.75rem 1.5rem;
 }
 [data-layout="horizontal"] .navbar-menu .navbar-nav .nav-link i {
   line-height: 1;
 }
 [data-layout="horizontal"] .navbar-menu .navbar-nav .nav-link.active {
-  color: var(--vz-topnav-item-color-active);
+  color: #fff;
 }
 [data-layout="horizontal"] .navbar-menu .navbar-nav .nav-link.active:after {
-  color: var(--vz-topnav-item-color-active);
+  color: #fff;
 }
 [data-layout="horizontal"]
   .navbar-menu
@@ -12697,7 +12697,7 @@ span.flatpickr-weekday {
   background: linear-gradient(-45deg, #405189 50%, #0ab39c);
 } */
 .auth-bg-cover > .bg-overlay {
-  background-image: url(../images/banner-placeholder.jpg);
+  background-image: url(../images/uba-brand-new-banking-experience-4.jpg);
   background-position: center;
   background-size: cover;
   opacity: 0.6;

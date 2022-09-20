@@ -2,19 +2,24 @@
 !isset($_SESSION) ? session_start() : null;
 ?>
 <!doctype html>
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
-    data-sidebar-image="none">
+
+<html lang="en" data-layout="horizontal" data-layout-style="" data-layout-position="fixed" data-topbar="light">
+
 <head>
 
     <meta charset="utf-8" />
-    <title>Agency Banking Management System</title>
+    <title>UBA - Agency Banking System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Bsystems Limited" name="author" />
+    <meta content="Agency Banking System" name="description" />
+    <meta content="UBA" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="apps/template/statics/assets/images/logo.png">
+    <link rel="shortcut icon" href="apps/template/statics/assets/images/favicon.png">
 
-    <!-- Layout config Js -
-    <script src="assets/js/layout.js"></script>-->
+    <!-- plugin css -->
+    <link href="apps/template/statics/assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Layout config Js -->
+    <script src="apps/template/statics/assets/js/layout.js"></script>
     <!-- Bootstrap Css -->
     <link href="apps/template/statics/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->

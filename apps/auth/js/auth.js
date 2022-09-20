@@ -7,13 +7,13 @@ $('#user_loginForm').on('submit', function(e){
     
     var email = $('#username').val();
 
-    grecaptcha.ready(function() {
-        grecaptcha.execute('6Lfqc-YhAAAAAIVtOJ7GyiGX4gjWJE8FAGOsi418', {action: 'CTRLLoginUser'}).then(function(token) {
-            $('#user_loginForm').prepend('<input type="hidden" name="r_token" value="' + token + '">');
-            $('#user_loginForm').prepend('<input type="hidden" name="r_action" value="CTRLLoginUser">');
-            //$('#loginForm').unbind('submit').submit();
-        });;
-    });
+    // grecaptcha.ready(function() {
+    //     grecaptcha.execute('6Lfqc-YhAAAAAIVtOJ7GyiGX4gjWJE8FAGOsi418', {action: 'CTRLLoginUser'}).then(function(token) {
+    //         $('#user_loginForm').prepend('<input type="hidden" name="r_token" value="' + token + '">');
+    //         $('#user_loginForm').prepend('<input type="hidden" name="r_action" value="CTRLLoginUser">');
+    //         //$('#loginForm').unbind('submit').submit();
+    //     });;
+    // });
 
     
     $.ajax({
@@ -21,14 +21,15 @@ $('#user_loginForm').on('submit', function(e){
         method: "POST",
         data: new FormData(this),
         contentType: false,
+        dataType: "JSON",
         cache: false,
         processData: false,
         success: function(data){
             $('#responseHere').fadeOut('slow', function(){
                               
-                if(data =="Login Successful"){
+                if(data.message =="Login Successful" && data.error_code == 111){
                     setInterval(()=>{
-                        window.location = "dashboard";
+                        window.location = "admin";
                     }, 4000);
                 }
 
