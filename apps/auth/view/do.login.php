@@ -25,16 +25,15 @@ $_SESSION['login_tkn'] = $login_token;
                     <div class="col-lg-12">
                         <div class="card overflow-hidden">
                             <div class="row g-0">
-                                <div class="col-lg-6">
-                                    <div class="p-lg-5 p-4 auth-one-bg h-100">
-                                        <div class="bg-overlay"></div>
-                                        <div class="position-relative h-100 d-flex flex-column">
-                                            <div class="mb-4">
-                                                <a href="javascript:void(0);" class="d-block">
-                                                    <img src="apps/template/assets/images/ubalogo.png" alt="" width="100">
-                                                </a>
-                                            </div>
-                                        </div>
+                                <div class="col-lg-6" style="background: #000;">
+                                    <div class="mb-4">
+                                        <a href="javascript:void(0);" class="d-block">
+                                            <img src="apps/template/statics/assets/images/bs_bg.png" alt="" style="width:100%;">
+                                        </a>
+                                        <p style="color: #fff; padding:10px;">
+                                            Agency Management System.
+                                            Developed by <a style="color: #fff;" href="https://www.bsystemslimited.com">Bsystems Limited</a>
+                                        </p>
                                     </div>
                                 </div>
                                 <!-- end col -->
@@ -43,7 +42,7 @@ $_SESSION['login_tkn'] = $login_token;
                                     <div class="p-lg-5 p-4">
                                         <div>
                                             <h5 class="text-primary">Welcome!</h5>
-                                            <p class="text-muted">Sign in to continue to UBA Agency Management System.
+                                            <p class="text-muted">Sign in to Agency Management System.
                                             </p>
                                         </div>
 
@@ -101,22 +100,7 @@ $_SESSION['login_tkn'] = $login_token;
         <!-- end auth page content -->
 
         <!-- footer -->
-        <footer class="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="text-center">
-                            <p class="mb-0">&copy;
-                                <script>
-                                    document.write(new Date().getFullYear())
-                                </script> UBA Agency Management System.
-                                Designed and Developed by <a class="text-dark" href="https://www.bsystemslimited.com">Bsystems Limited</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
+
         <!-- end Footer -->
     </div>
     <!-- end auth-page-wrapper -->

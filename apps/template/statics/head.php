@@ -8,7 +8,7 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>UBA - Agency Banking System</title>
+    <title>Bsystems - Agency Banking System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Agency Banking System" name="description" />
     <meta content="UBA" name="author" />
@@ -30,6 +30,8 @@
     <link href="apps/template/statics/assets/css/custom.min.css" rel="stylesheet" type="text/css" />
 
     <link href="apps/template/statics/assets/loaders/custom-loader.css" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="apps/template/assets/toast/css/jquery.toast.css" />
 
     <!--datatable css-->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
