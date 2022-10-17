@@ -185,16 +185,20 @@ class CTRLLoginUser
                             );
 
                             $save_activities = $login_obj->userActivitiesMDL($activity_data, $this->table_b);
+                           
+                            $message        = "Password Expired";
+                            $error_code     = 112;
 
-                            echo "Password expired. Please check your ";
+                            $response_msg   = array(
+                                'error' => true,
+                                'message' => $message,
+                                'error_code' => $error_code
+                            );
 
-                            echo "<script>
-                            window.location = 'change_password';
-                            </script>";
-
-                            echo "Password Expired";
+                            echo json_encode($response_msg);
 
                             return;
+
                         } elseif (in_array($user_access_level, $agency_access_levels) && $password_number_of_days < $password_expiry_check) {
 
                             //check if agency is active (if access level is Agent Admin, Teller, of Branch supervisor)
@@ -222,6 +226,7 @@ class CTRLLoginUser
                                 $_SESSION['user_access_level']      = isset($user['user_access_level']) ? $user['user_access_level'] : null;
                                 $_SESSION['user_branch']    = isset($user['user_branch']) ? $user['user_branch'] : null;
                                 $_SESSION['user_institution']   = isset($user['user_institution']) ? $user['user_institution'] : null;
+                                $_SESSION["isLogin"] = 1;
 
                                 //echo "Login Successful";
 
@@ -246,6 +251,7 @@ class CTRLLoginUser
                                 $_SESSION['user_access_level']      = isset($user['user_access_level']) ? $user['user_access_level'] : null;
                                 $_SESSION['user_branch']    = isset($user['user_branch']) ? $user['user_branch'] : null;
                                 $_SESSION['user_institution']   = isset($user['user_institution']) ? $user['user_institution'] : null;
+                                $_SESSION["isLogin"] = 1;
 
 
                                 $message        = "Login Successful";
@@ -296,6 +302,7 @@ class CTRLLoginUser
                             $_SESSION['user_access_level']      = isset($user['user_access_level']) ? $user['user_access_level'] : null;
                             $_SESSION['user_branch']    = isset($user['user_branch']) ? $user['user_branch'] : null;
                             $_SESSION['user_institution']   = isset($user['user_institution']) ? $user['user_institution'] : null;
+                            $_SESSION["isLogin"] = 1;
 
 
                             $message        = "Login Successful";

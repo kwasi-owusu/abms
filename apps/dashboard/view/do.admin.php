@@ -1,5 +1,12 @@
 <?php
+
 require_once dirname(__DIR__, 2) . '/template/statics/head.php';
+
+if (!isset($_SESSION["isLogin"])) {
+    echo '<script>
+			window.location = "home";
+		</script>';
+}
 
 require_once dirname(__DIR__, 2) . '/auth/controller/AuthEnums.php';
 require_once dirname(__DIR__, 2) . '/auth/controller/CTRLSecureLogin.php';
@@ -12,6 +19,12 @@ $create_token       = new CTRLSecureLogin();
 $login_token        = $create_token->is_login_hash_valid($page_name, $hash_key);
 $_SESSION['login_tkn'] = $login_token;
 
+
+require_once dirname(__DIR__) . '/controller/CTRLDashboard.php';
+
+$transactions_for_today = new CTRLDashboard();
+
+$transactions = $transactions_for_today->transactions_for_today();
 ?>
 
 <body>
@@ -28,19 +41,19 @@ $_SESSION['login_tkn'] = $login_token;
                             <!-- Dark Logo-->
                             <a href="javascript:void(0);" class="logo logo-dark">
                                 <span class="logo-sm">
-                                    <img src="apps/templates/assets/images/logo.png" alt="" width="60">
+                                    <img src="apps/templates/assets/images/logo.png" alt="" width="150">
                                 </span>
                                 <span class="logo-lg">
-                                    <img src="apps/template/assets/images/logo.png" alt="" width="60">
+                                    <img src="apps/template/assets/images/logo.png" alt="" width="150">
                                 </span>
                             </a>
                             <!-- Light Logo-->
                             <a href="javascript:void(0);" class="logo logo-light">
                                 <span class="logo-sm">
-                                    <img src="apps/template/assets/images/logo.png" alt="" width="60">
+                                    <img src="apps/template/assets/images/logo.png" alt="" width="150">
                                 </span>
                                 <span class="logo-lg">
-                                    <img src="apps/template/assets/images/logo.png" alt="" width="60">
+                                    <img src="apps/template/assets/images/logo.png" alt="" width="150">
                                 </span>
                             </a>
                         </div>
@@ -638,7 +651,7 @@ $_SESSION['login_tkn'] = $login_token;
                                                 <div class="d-flex justify-content-between">
                                                     <div>
                                                         <p class="fw-medium text-muted mb-0">Total Users</p>
-                                                        <h2 class="mt-4 ff-secondary fw-semibold">350</h2>
+                                                        <h2 class="mt-4 ff-secondary fw-semibold" id="total_active_users"></h2>
                                                     </div>
                                                     <div>
                                                         <div class="avatar-sm flex-shrink-0">
@@ -658,7 +671,7 @@ $_SESSION['login_tkn'] = $login_token;
                                                 <div class="d-flex justify-content-between">
                                                     <div>
                                                         <p class="fw-medium text-muted mb-0">Total Users Online </p>
-                                                        <h2 class="mt-4 ff-secondary fw-semibold">151</h2>
+                                                        <h2 class="mt-4 ff-secondary fw-semibold" id="total_users_online"></h2>
                                                     </div>
                                                     <div>
                                                         <div class="avatar-sm flex-shrink-0">
@@ -680,8 +693,7 @@ $_SESSION['login_tkn'] = $login_token;
                                                 <div class="d-flex justify-content-between">
                                                     <div>
                                                         <p class="fw-medium text-muted mb-0">Total Agencies</p>
-                                                        <h2 class="mt-4 ff-secondary fw-semibold">
-                                                            3500
+                                                        <h2 class="mt-4 ff-secondary fw-semibold" id="total_agencies"></h2>
                                                         </h2>
                                                     </div>
                                                     <div>
@@ -702,9 +714,7 @@ $_SESSION['login_tkn'] = $login_token;
                                                 <div class="d-flex justify-content-between">
                                                     <div>
                                                         <p class="fw-medium text-muted mb-0">Total Branches</p>
-                                                        <h2 class="mt-4 ff-secondary fw-semibold">
-                                                            5402
-                                                        </h2>
+                                                        <h2 class="mt-4 ff-secondary fw-semibold" id="total_active_branches"></h2>
                                                     </div>
                                                     <div>
                                                         <div class="avatar-sm flex-shrink-0">
@@ -765,7 +775,7 @@ $_SESSION['login_tkn'] = $login_token;
                                                 <div class="d-flex justify-content-between">
                                                     <div>
                                                         <p class="fw-medium text-muted mb-0">Total Cr. Transactions</p>
-                                                        <h2 class="mt-4 ff-secondary fw-semibold" style="color: #092;">350</h2>
+                                                        <h2 class="mt-4 ff-secondary fw-semibold" style="color: #092;" id="total_cr_transactions_for_today"></h2>
                                                     </div>
                                                     <div>
                                                         <div class="avatar-sm flex-shrink-0">
@@ -785,7 +795,7 @@ $_SESSION['login_tkn'] = $login_token;
                                                 <div class="d-flex justify-content-between">
                                                     <div>
                                                         <p class="fw-medium text-muted mb-0">Total Dr. Transactions </p>
-                                                        <h2 class="mt-4 ff-secondary fw-semibold" style="color: #d70900;">151</h2>
+                                                        <h2 class="mt-4 ff-secondary fw-semibold" style="color: #d70900;" id="total_dr_transactions_for_today"></h2>
                                                     </div>
                                                     <div>
                                                         <div class="avatar-sm flex-shrink-0">
@@ -806,10 +816,8 @@ $_SESSION['login_tkn'] = $login_token;
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between">
                                                     <div>
-                                                        <p class="fw-medium text-muted mb-0">Total Successful Transactions</p>
-                                                        <h2 class="mt-4 ff-secondary fw-semibold" style="color: #092;">
-                                                            3500
-                                                        </h2>
+                                                        <p class="fw-medium text-muted mb-0">Total Sum Dr Transactions</p>
+                                                        <h2 class="mt-4 ff-secondary fw-semibold" style="color: #d70900;" id="total_sum_dr_for_today"></h2>
                                                     </div>
                                                     <div>
                                                         <div class="avatar-sm flex-shrink-0">
@@ -828,10 +836,8 @@ $_SESSION['login_tkn'] = $login_token;
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between">
                                                     <div>
-                                                        <p class="fw-medium text-muted mb-0">Total Failed Transactions</p>
-                                                        <h2 class="mt-4 ff-secondary fw-semibold" style="color: #d70900;">
-                                                            5402
-                                                        </h2>
+                                                        <p class="fw-medium text-muted mb-0">Total Sum Cr Transactions</p>
+                                                        <h2 class="mt-4 ff-secondary fw-semibold" style="color: #092;" id="total_sum_cr_for_today"></h2>
                                                     </div>
                                                     <div>
                                                         <div class="avatar-sm flex-shrink-0">
@@ -882,7 +888,7 @@ $_SESSION['login_tkn'] = $login_token;
                                                     <span class="counter-value" data-target="40">0</span>sec
                                                     <span class="text-success ms-1 fs-12">37%<i class="ri-arrow-right-up-line ms-1 align-middle"></i></span>
                                                 </h5>
-                                                <p class="text-muted mb-0">Avg. Session Duration</p>
+                                                <p class="text-muted mb-0">Avg. Session Duration (Last 30 days)</p>
                                             </div>
                                         </div>
                                         <!--end col-->
@@ -899,7 +905,7 @@ $_SESSION['login_tkn'] = $login_token;
                         <div class="col-xl-6">
                             <div class="card card-height-100">
                                 <div class="card-header align-items-center d-flex">
-                                    <h4 class="card-title mb-0 flex-grow-1">Audiences Sessions by Country</h4>
+                                    <h4 class="card-title mb-0 flex-grow-1">Debit vs Credit Volume</h4>
                                     <div class="flex-shrink-0">
                                         <div class="dropdown card-header-dropdown">
                                             <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -1053,6 +1059,12 @@ $_SESSION['login_tkn'] = $login_token;
                             <div class="card">
                                 <div class="card-header">
                                     <h5 class="card-title mb-0">Transactions for Today</h5>
+                                    <?php 
+                                    $dt = DATE('Y-m-d');
+                                    //$tdy = strtotime($dt);
+
+                                    echo $dt;
+                                    ?>
                                 </div>
                                 <div class="card-body">
                                     <table id="buttons-datatables" class="display table buttons-datatables" style="width:100%">
@@ -1072,32 +1084,28 @@ $_SESSION['login_tkn'] = $login_token;
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php
+                                            foreach ($transactions as $trn) {
+                                                $db_date = $trn['transaction_date'];
+                                                $dt     = strtotime($db_date);
+                                                $trans_date = DATE( 'Y-m-d', $dt );
+                                            ?>
                                             <tr>
                                                 <th scope="row">
                                                     <div class="form-check">
                                                         <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option1">
                                                     </div>
                                                 </th>
-                                                <td>Tiger Nixon</td>
-                                                <td>Asylum Down</td>
-                                                <td>Withdrawal</td>
-                                                <td>500.00</td>
-                                                <td>2022/09/25</td>
-                                                <td>Pending</td>
+                                                <td><?php echo $trn['agency_name']; ?></td>
+                                                <td><?php echo $trn['branch_name']; ?></td>
+                                                <td><?php echo $trn['TransactionType']; ?></td>
+                                                <td><?php echo number_format($trn['total_amount'], 2); ?></td>
+                                                <td><?php echo $trans_date; ?></td>
+                                                <td><?php echo $trn['TransactionStatus']; ?></td>
                                             </tr>
-                                            <tr>
-                                                <th scope="row">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option1">
-                                                    </div>
-                                                </th>
-                                                <td>Tiger Nixon</td>
-                                                <td>Asylum Down</td>
-                                                <td>Withdrawal</td>
-                                                <td>1,500.00</td>
-                                                <td>2022/09/25</td>
-                                                <td>Successful</td>
-                                            </tr>
+                                            <?php
+                                            }
+                                            ?>
                                     </table>
                                 </div>
                             </div>

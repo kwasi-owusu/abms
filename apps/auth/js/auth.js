@@ -34,15 +34,16 @@ $("#user_loginForm").on("submit", function (e) {
 
       $("#loader").hide();
 
-      if(data.message =="Login Successful" && data.error_code == 111){
+      if (data.message == "Login Successful" && data.error_code == 111) {
         setInterval("location.reload()", 3000);
         window.location = "admin";
-    }
-
-    else{
-     $("#loader").hide(); 
-     $('#saveBtn').prop('disabled', false);  
-    }
+      } else if (data.message == "Password Expired" && data.error_code == 112) {
+        setInterval("location.reload()", 3000);
+        window.location = "change_password";
+      } else {
+        $("#loader").hide();
+        $("#saveBtn").prop("disabled", false);
+      }
 
       setInterval("location.reload()", 3000);
     },

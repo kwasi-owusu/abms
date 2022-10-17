@@ -11,7 +11,8 @@
     <title>Bsystems - Agency Banking System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Agency Banking System" name="description" />
-    <meta content="UBA" name="author" />
+    <meta content="Bsystems Limited" name="author" />
+    <meta http-equiv="refresh" content="1500; url=logout" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="apps/template/statics/assets/images/favicon.png">
 
