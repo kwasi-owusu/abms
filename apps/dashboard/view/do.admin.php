@@ -599,6 +599,25 @@ $transactions = $transactions_for_today->transactions_for_today();
                     <!-- start page title -->
                     <div class="row">
                         <div class="col-12">
+                            <div class="row h-100">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body p-0">
+                                            <div class="alert alert-warning border-0 rounded-0 m-0 d-flex align-items-center" role="alert">
+                                                <i data-feather="alert-triangle" class="text-warning me-2 icon-sm"></i>
+                                                <div class="flex-grow-1 text-truncate">
+                                                    Your free trial expired in <b>17</b> days.
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <a href="change_password" class="text-reset text-decoration-underline"><b>Change Password</b></a>
+                                                </div>
+                                            </div>
+
+                                        </div> <!-- end card-body-->
+                                    </div>
+                                </div> <!-- end col-->
+                            </div>
+
                             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                                 <h4 class="mb-sm-0">Dashboard</h4>
                             </div>
@@ -609,41 +628,6 @@ $transactions = $transactions_for_today->transactions_for_today();
                     <div class="row">
                         <div class="col-xxl-6">
                             <div class="d-flex flex-column h-100">
-                                <div class="row h-100">
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="card-body p-0">
-                                                <div class="alert alert-warning border-0 rounded-0 m-0 d-flex align-items-center" role="alert">
-                                                    <i data-feather="alert-triangle" class="text-warning me-2 icon-sm"></i>
-                                                    <div class="flex-grow-1 text-truncate">
-                                                        Your free trial expired in <b>17</b> days.
-                                                    </div>
-                                                    <div class="flex-shrink-0">
-                                                        <a href="pages-pricing.html" class="text-reset text-decoration-underline"><b>Upgrade</b></a>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row align-items-end">
-                                                    <div class="col-sm-8">
-                                                        <div class="p-3">
-                                                            <p class="fs-16 lh-base">Upgrade your plan from a <span class="fw-semibold">Free trial</span>, to ‘Premium
-                                                                Plan’ <i class="mdi mdi-arrow-right"></i></p>
-                                                            <div class="mt-3">
-                                                                <a href="pages-pricing.html" class="btn btn-success">Upgrade Account!</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="px-3">
-                                                            <img src="assets/images/user-illustarator-2.png" class="img-fluid" alt="">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div> <!-- end card-body-->
-                                        </div>
-                                    </div> <!-- end col-->
-                                </div> <!-- end row-->
-
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="card card-animate">
@@ -733,41 +717,6 @@ $transactions = $transactions_for_today->transactions_for_today();
 
                         <div class="col-xxl-6">
                             <div class="d-flex flex-column h-100">
-                                <div class="row h-100">
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="card-body p-0">
-                                                <div class="alert alert-warning border-0 rounded-0 m-0 d-flex align-items-center" role="alert">
-                                                    <i data-feather="alert-triangle" class="text-warning me-2 icon-sm"></i>
-                                                    <div class="flex-grow-1 text-truncate">
-                                                        Your free trial expired in <b>17</b> days.
-                                                    </div>
-                                                    <div class="flex-shrink-0">
-                                                        <a href="pages-pricing.html" class="text-reset text-decoration-underline"><b>Upgrade</b></a>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row align-items-end">
-                                                    <div class="col-sm-8">
-                                                        <div class="p-3">
-                                                            <p class="fs-16 lh-base">Upgrade your plan from a <span class="fw-semibold">Free trial</span>, to ‘Premium
-                                                                Plan’ <i class="mdi mdi-arrow-right"></i></p>
-                                                            <div class="mt-3">
-                                                                <a href="pages-pricing.html" class="btn btn-success">Upgrade Account!</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="px-3">
-                                                            <img src="assets/images/user-illustarator-2.png" class="img-fluid" alt="">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div> <!-- end card-body-->
-                                        </div>
-                                    </div> <!-- end col-->
-                                </div> <!-- end row-->
-
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="card card-animate">
@@ -860,35 +809,46 @@ $transactions = $transactions_for_today->transactions_for_today();
                         <div class="col-xl-6">
                             <div class="card">
                                 <div class="card-header border-0 align-items-center d-flex">
-                                    <h4 class="card-title mb-0 flex-grow-1">Transactions Metrics</h4>
+                                    <h4 class="card-title mb-0 flex-grow-1">Top 10 Performing Agents</h4>
                                 </div><!-- end card header -->
                                 <div class="card-header p-0 border-0 bg-soft-light">
                                     <div class="row g-0 text-center">
-                                        <div class="col-6 col-sm-4">
+
+                                        <div class="col-6 col-sm-3">
                                             <div class="p-3 border border-dashed border-start-0">
                                                 <h5 class="mb-1"><span class="counter-value" data-target="854">0</span>
                                                     <span class="text-success ms-1 fs-12">49%<i class="ri-arrow-right-up-line ms-1 align-middle"></i></span>
                                                 </h5>
-                                                <p class="text-muted mb-0">Avg. Session</p>
+                                                <p class="text-muted mb-0">Account Opening</p>
                                             </div>
                                         </div>
                                         <!--end col-->
-                                        <div class="col-6 col-sm-4">
+                                        <div class="col-6 col-sm-3">
                                             <div class="p-3 border border-dashed border-start-0">
                                                 <h5 class="mb-1"><span class="counter-value" data-target="1278">0</span>
                                                     <span class="text-success ms-1 fs-12">60%<i class="ri-arrow-right-up-line ms-1 align-middle"></i></span>
                                                 </h5>
-                                                <p class="text-muted mb-0">Conversion Rate</p>
+                                                <p class="text-muted mb-0">Remittances</p>
                                             </div>
                                         </div>
                                         <!--end col-->
-                                        <div class="col-6 col-sm-4">
+                                        <div class="col-6 col-sm-3">
                                             <div class="p-3 border border-dashed border-start-0 border-end-0">
                                                 <h5 class="mb-1"><span class="counter-value" data-target="3">0</span>m
                                                     <span class="counter-value" data-target="40">0</span>sec
                                                     <span class="text-success ms-1 fs-12">37%<i class="ri-arrow-right-up-line ms-1 align-middle"></i></span>
                                                 </h5>
-                                                <p class="text-muted mb-0">Avg. Session Duration (Last 30 days)</p>
+                                                <p class="text-muted mb-0">Credit Transactions</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-sm-3">
+                                            <div class="p-3 border border-dashed border-start-0 border-end-0">
+                                                <h5 class="mb-1"><span class="counter-value" data-target="3">0</span>m
+                                                    <span class="counter-value" data-target="40">0</span>sec
+                                                    <span class="text-success ms-1 fs-12">37%<i class="ri-arrow-right-up-line ms-1 align-middle"></i></span>
+                                                </h5>
+                                                <p class="text-muted mb-0">Debit Transactions</p>
                                             </div>
                                         </div>
                                         <!--end col-->
@@ -1059,7 +1019,7 @@ $transactions = $transactions_for_today->transactions_for_today();
                             <div class="card">
                                 <div class="card-header">
                                     <h5 class="card-title mb-0">Transactions for Today</h5>
-                                    <?php 
+                                    <?php
                                     $dt = DATE('Y-m-d');
                                     //$tdy = strtotime($dt);
 
@@ -1088,21 +1048,21 @@ $transactions = $transactions_for_today->transactions_for_today();
                                             foreach ($transactions as $trn) {
                                                 $db_date = $trn['transaction_date'];
                                                 $dt     = strtotime($db_date);
-                                                $trans_date = DATE( 'Y-m-d', $dt );
+                                                $trans_date = DATE('Y-m-d', $dt);
                                             ?>
-                                            <tr>
-                                                <th scope="row">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option1">
-                                                    </div>
-                                                </th>
-                                                <td><?php echo $trn['agency_name']; ?></td>
-                                                <td><?php echo $trn['branch_name']; ?></td>
-                                                <td><?php echo $trn['TransactionType']; ?></td>
-                                                <td><?php echo number_format($trn['total_amount'], 2); ?></td>
-                                                <td><?php echo $trans_date; ?></td>
-                                                <td><?php echo $trn['TransactionStatus']; ?></td>
-                                            </tr>
+                                                <tr>
+                                                    <th scope="row">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option1">
+                                                        </div>
+                                                    </th>
+                                                    <td><?php echo $trn['agency_name']; ?></td>
+                                                    <td><?php echo $trn['branch_name']; ?></td>
+                                                    <td><?php echo $trn['TransactionType']; ?></td>
+                                                    <td><?php echo number_format($trn['total_amount'], 2); ?></td>
+                                                    <td><?php echo $trans_date; ?></td>
+                                                    <td><?php echo $trn['TransactionStatus']; ?></td>
+                                                </tr>
                                             <?php
                                             }
                                             ?>
