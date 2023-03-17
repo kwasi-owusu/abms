@@ -1,5 +1,5 @@
 <!-- JAVASCRIPT -->
-<script src="apps/template/statics/assets/libs/jquery/uncompressed_jquery-3.6.1.js"></script>-->
+<script src="apps/template/statics/assets/libs/jquery/uncompressed_jquery-3.6.1.js"></script>
 
 <script src="apps/template/statics/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="apps/template/statics/assets/libs/simplebar/simplebar.min.js"></script>
@@ -36,6 +36,4 @@
 <!-- App js -->
 <script src="apps/template/statics/assets/js/app.js"></script>
 
-<!-- google recaptcha 
-<script src="https://www.google.com/recaptcha/api.js?render=6Lfqc-YhAAAAAIVtOJ7GyiGX4gjWJE8FAGOsi418"></script>
--->
+<script src="apps/template/statics/assets/tinymce/js/tinymce/tinymce.min.js"></script>

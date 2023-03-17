@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__DIR__) . '/controller/ISecureLoginInterface.php';
+require_once dirname(__DIR__, 1) . '/interfaces/ISecureLoginInterface.php';
 require_once dirname(__DIR__) . '/model/MDLSecureLogin.php';
 
 class CTRLSecureLogin implements ISecureLoginInterface{

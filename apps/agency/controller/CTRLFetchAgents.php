@@ -4,6 +4,8 @@
 
 date_default_timezone_set("Africa/Accra");
 
+require_once dirname(__DIR__, 2) . '/template/statics/db/ConnectDatabase.php';
+
 require_once dirname(__DIR__) . '/model/MDLFetchAgents.php';
 
 require_once dirname(__DIR__) . '/controller/CTRLSecureAgencySetup.php';
@@ -25,7 +27,7 @@ class CTRLFetchAgents extends MDLFetchAgents
         $this->officer                  = $officer;
         $this->user_access_level        = $user_access_level;
         $this->user_roles               = $user_roles;
-        $this->geneal_settings          = $geneal_settings;
+        $this->general_settings         = $geneal_settings;
     }
 
     public function ctrl_fetchThisAgent($agency_id, $agency_code, $agency_key){

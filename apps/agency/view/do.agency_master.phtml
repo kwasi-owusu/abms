@@ -1,0 +1,566 @@
+<?php
+
+require_once dirname(__DIR__, 2) . '/template/statics/head.php';
+
+if (!isset($_SESSION["isLogin"])) {
+    echo '<script>
+			window.location = "home";
+		</script>';
+}
+
+require_once dirname(__DIR__, 2) . '/auth/enums/AuthEnums.php';
+require_once dirname(__DIR__, 2) . '/auth/controller/CTRLSecureLogin.php';
+
+$page_name          = AuthEnums::login_page_name->value;
+$hash_key           = AuthEnums::secure_form_cors_hash->value;
+
+
+$create_token       = new CTRLSecureLogin();
+$login_token        = $create_token->is_login_hash_valid($page_name, $hash_key);
+$_SESSION['login_tkn'] = $login_token;
+
+
+require_once dirname(__DIR__, 2) . '/dashboard/controller/CTRLDashboard.php';
+
+$transactions_for_today = new CTRLDashboard();
+
+$transactions = $transactions_for_today->transactions_for_today();
+?>
+
+<body>
+
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+        <header id="page-topbar">
+            <div class="layout-width">
+                <div class="navbar-header">
+                    <div class="d-flex">
+                        <!-- LOGO -->
+                        <div class="navbar-brand-box">
+                            <!-- Dark Logo-->
+                            <a href="javascript:void(0);" class="logo logo-dark">
+                                <span class="logo-sm">
+                                    <img src="apps/template/statics/assets/images/logo.png" alt="" width="150">
+                                </span>
+                                <span class="logo-lg">
+                                    <img src="apps/template/statics/assets/images/logo.png" alt="" width="150">
+                                </span>
+                            </a>
+                            <!-- Light Logo-->
+                            <a href="javascript:void(0);" class="logo logo-light">
+                                <span class="logo-sm">
+                                    <img src="apps/template/statics/assets/images/logo.png" alt="" width="150">
+                                </span>
+                                <span class="logo-lg">
+                                    <img src="apps/template/statics/assets/images/logo.png" alt="" width="150">
+                                </span>
+                            </a>
+                        </div>
+
+                        <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger" id="topnav-hamburger-icon">
+                            <span class="hamburger-icon">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </span>
+                        </button>
+
+                        <div class="app-search position-relative">
+                            <h2>AGENCY BANKING MANAGEMENT SOLUTION</h2>
+                        </div>
+
+                    </div>
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="ms-1 header-item d-none d-sm-flex">
+                            <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle" data-toggle="fullscreen">
+                                <i class='bx bx-fullscreen fs-22'></i>
+                            </button>
+                        </div>
+
+                        <div class="ms-1 header-item d-none d-sm-flex">
+                            <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode">
+                                <i class='bx bx-moon fs-22'></i>
+                            </button>
+                        </div>
+
+                        <div class="dropdown ms-sm-3 header-item topbar-user">
+                            <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="d-flex align-items-center">
+                                    <span class="text-start ms-xl-2">
+                                        <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"><?php echo $_SESSION['first_name'] . " " . $_SESSION['last_name']; ?></span>
+                                    </span>
+                                </span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <!-- item-->
+                                <h6 class="dropdown-header">Welcome <?php echo $_SESSION['first_name'] . " " . $_SESSION['last_name']; ?>!</h6>
+                                <a class="dropdown-item" href="profile"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Profile</span></a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="logout"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- ========== App Menu ========== -->
+        <div class="app-menu navbar-menu">
+            <!-- LOGO -->
+            <div class="navbar-brand-box">
+                <!-- Dark Logo-->
+                <a href="admin" class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="apps/template/assets/images/logo.png" alt="">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="apps/template/assets/images/logo.png" alt="">
+                    </span>
+                </a>
+                <!-- Light Logo-->
+                <a href="admin" class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="apps/template/assets/images/logo.png" alt="">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="apps/template/assets/images/logo.png" alt="">
+                    </span>
+                </a>
+
+                <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
+                    <i class="ri-record-circle-line"></i>
+                </button>
+            </div>
+
+            <div id="scrollbar">
+                <?php
+
+                require_once dirname(__DIR__, 2) . '/template/statics/menu.php';
+                ?>
+                <!-- Sidebar -->
+            </div>
+
+            <div class="sidebar-background"></div>
+        </div>
+        <!-- Left Sidebar End -->
+        <!-- Vertical Overlay-->
+        <div class="vertical-overlay"></div>
+
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h4 class="mb-sm-0">Dashboard</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+
+
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-header border-0 align-items-center d-flex">
+                                    <h4 class="card-title mb-0 flex-grow-1">Agency Master</h4>
+                                </div><!-- end card header -->
+
+                                <div class="row g-0" style="padding:10px;">
+
+                                    <div class="row">
+                                        <div class="col-xl-8">
+                                            <form>
+                                                <div class="form-check form-check-dark mb-3 form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="stop_all_registration" name="stop_all_registration">
+                                                    <label class="form-check-label" for="formCheck12">
+                                                        Stop New Agent Registration
+                                                    </label>
+                                                </div>
+
+                                                <div class="form-check form-check-dark mb-3 form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="stop_all_branch_registration" name="stop_all_branch_registration">
+                                                    <label class="form-check-label" for="formCheck12">
+                                                        Stop New Branch Registration
+                                                    </label>
+                                                </div>
+
+                                                <div class="form-check form-check-dark mb-3 form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="stop_all_transactions" name="stop_all_transactions">
+                                                    <label class="form-check-label" for="formCheck12">
+                                                        Stop All Transactions
+                                                    </label>
+                                                </div>
+
+                                                <div class="form-check form-check-dark mb-3 form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="stop_all_transactions" name="stop_all_transactions">
+                                                    <label class="form-check-label" for="formCheck12">
+                                                        Stop New Teller Transactions
+                                                    </label>
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+
+                                        <div class="col-xl-2">
+                                            <button type="button" class="btn btn-secondary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#notificationModal">Notify All Agents</button>
+                                        </div>
+
+                                        <div class="col-xl-2">
+                                            <button type="button" class="btn btn-secondary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#emailModal">Email All Agents</button>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div><!-- end card -->
+                        </div><!-- end col -->
+
+                    </div><!-- end row -->
+
+
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+
+                                <div class="row g-0" style="padding:10px;">
+
+                                    <div class="row">
+                                        <div class="col-xl-6">
+                                            <form>
+                                                <div class="form-check form-check-dark mb-3 form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="stop_all_registration" name="stop_all_registration">
+                                                    <label class="form-check-label" for="formCheck12">
+                                                        Approve Teller Registration
+                                                    </label>
+                                                </div>
+
+                                                <div class="form-check form-check-dark mb-3 form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="stop_all_branch_registration" name="stop_all_branch_registration">
+                                                    <label class="form-check-label" for="formCheck12">
+                                                        Approve Branch Registration
+                                                    </label>
+                                                </div>
+
+
+                                                <div class="form-check form-check-dark mb-3 form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="stop_all_transactions" name="stop_all_transactions">
+                                                    <label class="form-check-label" for="formCheck12">
+                                                        Notify Agent on Low Balance
+                                                    </label>
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+
+                                        <div class="col-xl-4">
+                                            <div>
+                                                <label for="agent_minimum_balance" class="form-label">Agent Minimum Balance</label>
+                                                <input type="text" class="form-control" id="agent_minimum_balance" name="agent_minimum_balance" onkeypress="return IsNumeric(event);" ondrop="return false;">
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div><!-- end card -->
+                        </div><!-- end col -->
+
+                    </div><!-- end row -->
+
+                    <!-- Default Modals -->
+                    <div id="notificationModal" class="modal fade" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="notificationModalLabel">Send Notification</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <div>
+
+                                        <div class="mb-3">
+                                            <input type="text" class="form-control" placeholder="Subject">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="control-label"></label>
+                                            <textarea class="form-control post_content" id="post_content" name="post_content"></textarea>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary ">Send</button>
+                                </div>
+
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+
+                    <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="emailModalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header p-3 bg-light">
+                                    <h5 class="modal-title" id="composemodalTitle">New Email</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div>
+                                        <div class="mb-3 position-relative">
+                                            <input type="text" class="form-control email-compose-input" data-choices data-choices-limit="15" value="support@themesbrand.com" data-choices-removeItem placeholder="To">
+                                            <div class="position-absolute top-0 end-0">
+                                                <div class="d-flex">
+                                                    <button class="btn btn-link text-reset fw-semibold px-2" type="button" data-bs-toggle="collapse" data-bs-target="#CcRecipientsCollapse" aria-expanded="false" aria-controls="CcRecipientsCollapse">
+                                                        Cc
+                                                    </button>
+                                                    <button class="btn btn-link text-reset fw-semibold px-2" type="button" data-bs-toggle="collapse" data-bs-target="#BccRecipientsCollapse" aria-expanded="false" aria-controls="BccRecipientsCollapse">
+                                                        Bcc
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="collapse" id="CcRecipientsCollapse">
+                                            <div class="mb-3">
+                                                <label>Cc:</label>
+                                                <input type="text" class="form-control" data-choices data-choices-limit="15" data-choices-removeItem placeholder="Cc recipients">
+                                            </div>
+                                        </div>
+                                        <div class="collapse" id="BccRecipientsCollapse">
+                                            <div class="mb-3">
+                                                <label>Bcc:</label>
+                                                <input type="text" class="form-control" data-choices data-choices-limit="15" data-choices-removeItem placeholder="Bcc recipients">
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <input type="text" class="form-control" placeholder="Subject">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="control-label"></label>
+                                            <textarea class="form-control post_content" id="post_content" name="post_content"></textarea>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-ghost-danger" data-bs-dismiss="modal">Discard</button>
+
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-success">Send</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Agents List</h5>
+                                </div>
+                                <div class="card-body">
+                                    <table id="buttons-datatables" class="display table buttons-datatables" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Agent Name</th>
+                                                <th>Agent Code</th>
+                                                <th>Agent Type</th>
+                                                <th>Contact Phone</th>
+                                                <th>Contact Email</th>
+                                                <th>Total Branches</th>
+                                                <th>Total Tellers</th>
+                                                <th>Total Users</th>
+                                                <th>Agent Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tfoot>
+                                            <tr>
+                                                <th>Agent Name</th>
+                                                <th>Agent Code</th>
+                                                <th>Agent Type</th>
+                                                <th>Contact Phone</th>
+                                                <th>Contact Email</th>
+                                                <th>Total Branches</th>
+                                                <th>Total Tellers</th>
+                                                <th>Total Users</th>
+                                                <th>Agent Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+                                            <td>Bsystems LTD</td>
+                                            <td>SA21563</td>
+                                            <td>Super Agent</td>
+                                            <td>0244875552</td>
+                                            <td>agency@bsystemslimited.com</td>
+                                            <td>15</td>
+                                            <td>18</td>
+                                            <td>25</td>
+                                            <td>Active</td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="ri-more-2-fill"></i>
+                                                    </a>
+
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                        <li><a class="dropdown-item" href="manage_agent_branch">Manage Branches</a></li>
+                                                        <li><a class="dropdown-item" href="manage_agent_teller">Manage Tellers</a></li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0):" data-bs-toggle="modal" data-bs-target="#changeThisAgentStatusModal" data-id="20" onclick="change_agency_status(this)">Change Agent Status</a></li>
+                                                        <li><a class="dropdown-item" href="manage_agent_pos">Manage POS Terminal</a></li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#mailThisAgentModal" data-id="20" onclick="mail_this_agent(this)">Mail Agent</a></li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#notifyAgentModal" data-id="20" onclick="notify_this_agent(this)">Notify Agent</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </td>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="notifyAgentModal" tabindex="-1" role="dialog" aria-labelledby="emailModalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header p-3 bg-light">
+                                    <h5 class="modal-title" id="composemodalTitle">Notify This Agent</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body" id="notify_this_agent_content_here">
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-ghost-danger" data-bs-dismiss="modal">Discard</button>
+
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-success">Send</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="modal fade" id="mailThisAgentModal" tabindex="-1" role="dialog" aria-labelledby="emailModalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header p-3 bg-light">
+                                    <h5 class="modal-title" id="composemodalTitle">Email This Agent</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body" id="mail_this_agent_content_here">
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-ghost-danger" data-bs-dismiss="modal">Discard</button>
+
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-success">Send</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="modal fade" id="changeThisAgentStatusModal" tabindex="-1" role="dialog" aria-labelledby="changeThisAgentStatusModalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header p-3 bg-light">
+                                    <h5 class="modal-title" id="composemodalTitle">Change This Agent Status</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body" id="change_agency_status_content_here">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-header border-0 align-items-center d-flex">
+                                    <h4 class="card-title mb-0 flex-grow-1"></h4>
+                                </div><!-- end card header -->
+                                <div class="card-header p-0 border-0 bg-soft-light">
+                                    <div class="row g-0 text-center" style="padding:10px;">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- end row -->
+
+                </div>
+                <!-- container-fluid -->
+            </div>
+            <!-- End Page-content -->
+
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script> © AGENCY BANKING SYSTEM.
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="text-sm-end d-none d-sm-block">
+                                Design & Developed by <a href="https://www.bsystemslimited.com" target="_blank">Bsystems
+                                    Limited</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <!-- end main content-->
+    </div>
+    <!-- END layout-wrapper -->
+
+
+
+    <!--start back-to-top-->
+    <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
+        <i class="ri-arrow-up-line"></i>
+    </button>
+    <!--end back-to-top-->
+    <?php
+    require_once dirname(__DIR__, 2) . '/template/statics/footer_script.php';
+    ?>
+
+    <script src="apps/agency/js/extra.js"></script>
+
+</body>
+
+</html>

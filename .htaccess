@@ -7,4 +7,8 @@ RewriteRule ^home(.*)?$ index.php
 
 RewriteRule ^logout(.*)?$ apps/sign_out.php
 
+RewriteRule ^change_password(.*)?$ apps/auth/view/do.change_password.phtml
+
 RewriteRule ^admin(.*)?$ apps/dashboard/view/do.admin.php
+
+RewriteRule ^agency_master(.*)?$ apps/agency/view/do.agency_master.phtml

@@ -1,7 +1,9 @@
 <?php
+require_once dirname(__DIR__, 2) . '/template/statics/db/ConnectDatabase.php';
+
 require_once dirname(__DIR__) . '/model/MDLSecureAgencySetup.php';
 
-require_once dirname(__DIR__) . '/controller/ISaveAgencyInterface.php';
+require_once dirname(__DIR__) . '/interfaces/ISaveAgencyInterface.php';
 
 
 class CTRLSecureAgencySetup implements ISaveAgencyInterface

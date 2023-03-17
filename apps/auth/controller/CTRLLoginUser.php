@@ -91,7 +91,7 @@ class CTRLLoginUser
                 require_once dirname(__DIR__) . '/model/MDLUserActivities.php';
 
                 require_once dirname(__DIR__) . '/controller/CTRLSecureLogin.php';
-                require_once dirname(__DIR__) . '/controller/AuthEnums.php';
+                require_once dirname(__DIR__, 1) . '/enums/AuthEnums.php';
 
                 $login_obj = new MDLUserActivities();
 
@@ -104,7 +104,7 @@ class CTRLLoginUser
 
                 if ($count_rows > 0) {
 
-                    $user = $fetch_user->fetch(PDO::FETCH_ASSOC);
+                    $user                   = $fetch_user->fetch(PDO::FETCH_ASSOC);
                     $user_status            = isset($user['user_status']) ? $user['user_status'] : null;
                     $officer_id             = isset($user['user_id']) ? $user['user_id'] : null;
                     $user_access_level      = isset($user['user_access_level']) ? $user['user_access_level'] : null;
@@ -187,6 +187,7 @@ class CTRLLoginUser
                             $save_activities = $login_obj->userActivitiesMDL($activity_data, $this->table_b);
                            
                             $message        = "Password Expired";
+                            $_SESSION['officer_id']     = isset($user['user_id']) ? $user['user_id'] : null;
                             $error_code     = 112;
 
                             $response_msg   = array(

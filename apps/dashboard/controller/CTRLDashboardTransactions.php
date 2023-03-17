@@ -1,6 +1,8 @@
 <?php
 
 !isset($_SESSION) ? session_start() : null;
+
+require_once dirname(__DIR__, 2) . '/template/statics/db/ConnectDatabase.php';
 require_once dirname(__DIR__) . '/controller/CTRLDashboardSecurity.php'; 
 require_once dirname(__DIR__) . '/model/MDLSecureDashboard.php';
 
@@ -8,11 +10,14 @@ class CTRLDashboardTransactions{
 
     public function dashboard_transaction_summaries(){
 
+        $newPDO = new ConnectDatabase();
+        $thisPDO = $newPDO->Connect();
+
         $officer_id         = $_SESSION['officer_id'];
         $user_access_level  = $_SESSION['user_access_level'];
         $dashboard_sec      = new CTRLDashboardSecurity('agency_setup', 'agency_branches', 'transactions_tbl', 'abms_users', $officer_id, $user_access_level);
 
-        $mds = new MDLSecureDashboard();
+        $mds = new MDLSecureDashboard($newPDO, $thisPDO);
 
         $total_number_of_transactions       = $dashboard_sec->fetch_total_number_of_transactions_for_today($officer_id, $user_access_level, $mds);
         $total_successful_transactions      = $dashboard_sec->fetch_total_successful_transactions_for_today($officer_id, $user_access_level, $mds);
@@ -23,6 +28,7 @@ class CTRLDashboardTransactions{
 
         $totalDebitSum = isset($total_sum_dr_for_today['totalDebitSum']) ? number_format($total_sum_dr_for_today['totalDebitSum'], 2) : number_format(0, 2);
         $totalCreditSum = isset($total_sum_cr_for_today['totalCreditSum']) ? number_format($total_sum_cr_for_today['totalCreditSum'], 2): number_format(0, 2);
+        
         $response_msg = array(
             'total_number_of_transactions' => $total_number_of_transactions,
             'total_successful_transactions' => $total_successful_transactions,

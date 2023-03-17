@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__DIR__, 2) . '/template/statics/head.php';
 
-require_once dirname(__DIR__) . '/controller/AuthEnums.php';
+require_once dirname(__DIR__, 1) . '/enums/AuthEnums.php';
 require_once dirname(__DIR__) . '/controller/CTRLSecureLogin.php';
 
 $page_name          = AuthEnums::login_page_name->value;

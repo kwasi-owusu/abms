@@ -4,9 +4,11 @@
 
 date_default_timezone_set("Africa/Accra");
 
+require_once dirname(__DIR__, 2) . '/template/statics/db/ConnectDatabase.php';
+
 require_once dirname(__DIR__) . '/controller/CTRLSecureAgencySetup.php';
 require_once dirname(__DIR__, 2) . '/auth/model/MDLUserActivities.php';
-require_once dirname(__DIR__, 2) . '/AgentEnum.php';
+require_once dirname(__DIR__, 2) . '/enums/AgentEnum.php';
 
 
 class CTRLSetupAgency
@@ -200,7 +202,7 @@ class CTRLSetupAgency
                         'send_to' => $send_to
                     );
 
-                    if (MDLSaveThisAgency::saveThisAgencyMDL($data, $this->table_a, $this->table_b, $this->table_c)) {
+                    if (MDLThisAgency::saveThisAgencyMDL($data, $this->table_a, $this->table_b, $this->table_c)) {
 
                         $error          = false;
                         $message        = "Agency Setup successfully saved";

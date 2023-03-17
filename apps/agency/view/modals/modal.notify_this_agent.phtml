@@ -1,0 +1,35 @@
+<?php
+$agent_id = $_REQUEST['id'];
+?>
+<div>
+
+    <div class="mb-3">
+        <input type="text" class="form-control" placeholder="Subject">
+        <input type="hidden" class="form-control" id="agent_key" name="agent_key" value="<?php echo $agent_id; ?>">
+    </div>
+
+    <div class="mb-3">
+        <label class="control-label"></label>
+        <textarea class="form-control post_content" id="post_content" name="post_content"></textarea>
+    </div>
+
+</div>
+
+<script src="apps/template/statics/assets/tinymce/js/tinymce/tinymce.min.js"></script>
+<script>
+    tinymce.init({
+        selector: '.post_content',
+        height: 600,
+        menubar: true,
+
+        plugins: [
+            'advlist autolink lists link image charmap print preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table paste imagetools wordcount'
+        ],
+        toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+
+
+    });
+</script>
