@@ -14,7 +14,7 @@ class ConnectDatabase
         catch(PDOException $e)
         {
             //echo $e->getMessage();
-            echo "Agency Banking Is Down.";
+            echo "System Not Available.";
         }
 
     }

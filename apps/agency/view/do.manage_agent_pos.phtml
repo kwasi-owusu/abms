@@ -171,116 +171,102 @@ $transactions = $transactions_for_today->transactions_for_today();
                         <div class="col-xl-12">
                             <div class="card">
                                 <div class="card-header border-0 align-items-center d-flex">
-                                    <h4 class="card-title mb-0 flex-grow-1">Agency Master</h4>
+                                    <h4 class="card-title mb-0 flex-grow-1">Agent POS Terminals</h4>
                                 </div><!-- end card header -->
-
-                                <div class="row g-0" style="padding:10px;">
-
-                                    <div class="row">
-                                        <div class="col-xl-8">
-                                            <form>
-                                                <div class="form-check form-check-dark mb-3 form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="stop_all_registration" name="stop_all_registration">
-                                                    <label class="form-check-label" for="formCheck12">
-                                                        Stop New Agent Registration
-                                                    </label>
-                                                </div>
-
-                                                <div class="form-check form-check-dark mb-3 form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="stop_all_branch_registration" name="stop_all_branch_registration">
-                                                    <label class="form-check-label" for="formCheck12">
-                                                        Stop New Branch Registration
-                                                    </label>
-                                                </div>
-
-                                                <div class="form-check form-check-dark mb-3 form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="stop_all_transactions" name="stop_all_transactions">
-                                                    <label class="form-check-label" for="formCheck12">
-                                                        Stop All Transactions
-                                                    </label>
-                                                </div>
-
-                                                <div class="form-check form-check-dark mb-3 form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="stop_all_transactions" name="stop_all_transactions">
-                                                    <label class="form-check-label" for="formCheck12">
-                                                        Stop New Teller Transactions
-                                                    </label>
-                                                </div>
-
-                                            </form>
-
-                                        </div>
-
-                                        <div class="col-xl-2">
-                                            <button type="button" class="btn btn-dark waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#notificationModal">Notify All Agents</button>
-                                        </div>
-
-                                        <div class="col-xl-2">
-                                            <button type="button" class="btn btn-dark waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#emailModal">Email All Agents</button>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-
                             </div><!-- end card -->
                         </div><!-- end col -->
 
                     </div><!-- end row -->
-
 
                     <div class="row">
-                        <div class="col-xl-12">
-                            <div class="card">
-
-                                <div class="row g-0" style="padding:10px;">
-
-                                    <div class="row">
-                                        <div class="col-xl-6">
-                                            <form>
-                                                <div class="form-check form-check-dark mb-3 form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="stop_all_registration" name="stop_all_registration">
-                                                    <label class="form-check-label" for="formCheck12">
-                                                        Approve Teller Registration
-                                                    </label>
+                        <div class="col-xxl-12">
+                            <div class="d-flex flex-column h-100">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="card card-animate">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between">
+                                                    <div>
+                                                        <p class="fw-medium text-muted mb-0">Total Number of Terminals</p>
+                                                        <h2 class="mt-4 ff-secondary fw-semibold" id="total_terminals">1528</h2>
+                                                    </div>
+                                                    <div>
+                                                        <div class="avatar-sm flex-shrink-0">
+                                                            <span class="avatar-title bg-soft-info rounded-circle fs-2">
+                                                                <i data-feather="users" class="text-info"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                            </div><!-- end card body -->
+                                        </div> <!-- end card-->
+                                    </div> <!-- end col-->
 
-                                                <div class="form-check form-check-dark mb-3 form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="stop_all_branch_registration" name="stop_all_branch_registration">
-                                                    <label class="form-check-label" for="formCheck12">
-                                                        Approve Branch Registration
-                                                    </label>
+                                    <div class="col-md-3">
+                                        <div class="card card-animate">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between">
+                                                    <div>
+                                                        <p class="fw-medium text-muted mb-0">Total Active Terminals </p>
+                                                        <h2 class="mt-4 ff-secondary fw-semibold" id="total_active_terminals">1420</h2>
+                                                    </div>
+                                                    <div>
+                                                        <div class="avatar-sm flex-shrink-0">
+                                                            <span class="avatar-title bg-soft-info rounded-circle fs-2">
+                                                                <i data-feather="activity" class="text-info"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                            </div><!-- end card body -->
+                                        </div> <!-- end card-->
+                                    </div> <!-- end col-->
 
-
-                                                <div class="form-check form-check-dark mb-3 form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="stop_all_transactions" name="stop_all_transactions">
-                                                    <label class="form-check-label" for="formCheck12">
-                                                        Notify Agent on Low Balance
-                                                    </label>
+                                    <div class="col-md-3">
+                                        <div class="card card-animate">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between">
+                                                    <div>
+                                                        <p class="fw-medium text-muted mb-0">Total Inactive Terminals</p>
+                                                        <h2 class="mt-4 ff-secondary fw-semibold" id="total_inactive_terminals">18</h2>
+                                                        </h2>
+                                                    </div>
+                                                    <div>
+                                                        <div class="avatar-sm flex-shrink-0">
+                                                            <span class="avatar-title bg-soft-info rounded-circle fs-2">
+                                                                <i data-feather="cpu" class="text-info"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                            </div><!-- end card body -->
+                                        </div> <!-- end card-->
+                                    </div> <!-- end col-->
 
-                                            </form>
+                                    <div class="col-md-3">
+                                        <div class="card card-animate">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between">
+                                                    <div>
+                                                        <p class="fw-medium text-muted mb-0">Total POS Transactions (This Month)</p>
+                                                        <h2 class="mt-4 ff-secondary fw-semibold" id="total_terminal_transactions">250,000.00</h2>
+                                                    </div>
+                                                    <div>
+                                                        <div class="avatar-sm flex-shrink-0">
+                                                            <span class="avatar-title bg-soft-info rounded-circle fs-2">
+                                                                <i data-feather="external-link" class="text-info"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div><!-- end card body -->
+                                        </div> <!-- end card-->
+                                    </div> <!-- end col-->
+                                </div> <!-- end row-->
+                            </div>
+                        </div> <!-- end col-->
 
-                                        </div>
-
-                                        <div class="col-xl-4">
-                                            <div>
-                                                <label for="agent_minimum_balance" class="form-label">Agent Minimum Balance</label>
-                                                <input type="text" class="form-control" id="agent_minimum_balance" name="agent_minimum_balance" onkeypress="return IsNumeric(event);" ondrop="return false;">
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-
-                            </div><!-- end card -->
-                        </div><!-- end col -->
-
-                    </div><!-- end row -->
+                    </div> <!-- end row-->
 
                     <!-- Default Modals -->
                     <div id="notificationModal" class="modal fade" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true" style="display: none;">
@@ -315,63 +301,6 @@ $transactions = $transactions_for_today->transactions_for_today();
                         </div><!-- /.modal-dialog -->
                     </div><!-- /.modal -->
 
-                    <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="emailModalTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header p-3 bg-light">
-                                    <h5 class="modal-title" id="composemodalTitle">New Email</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div>
-                                        <div class="mb-3 position-relative">
-                                            <input type="text" class="form-control email-compose-input" data-choices data-choices-limit="15" value="support@themesbrand.com" data-choices-removeItem placeholder="To">
-                                            <div class="position-absolute top-0 end-0">
-                                                <div class="d-flex">
-                                                    <button class="btn btn-link text-reset fw-semibold px-2" type="button" data-bs-toggle="collapse" data-bs-target="#CcRecipientsCollapse" aria-expanded="false" aria-controls="CcRecipientsCollapse">
-                                                        Cc
-                                                    </button>
-                                                    <button class="btn btn-link text-reset fw-semibold px-2" type="button" data-bs-toggle="collapse" data-bs-target="#BccRecipientsCollapse" aria-expanded="false" aria-controls="BccRecipientsCollapse">
-                                                        Bcc
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="collapse" id="CcRecipientsCollapse">
-                                            <div class="mb-3">
-                                                <label>Cc:</label>
-                                                <input type="text" class="form-control" data-choices data-choices-limit="15" data-choices-removeItem placeholder="Cc recipients">
-                                            </div>
-                                        </div>
-                                        <div class="collapse" id="BccRecipientsCollapse">
-                                            <div class="mb-3">
-                                                <label>Bcc:</label>
-                                                <input type="text" class="form-control" data-choices data-choices-limit="15" data-choices-removeItem placeholder="Bcc recipients">
-                                            </div>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <input type="text" class="form-control" placeholder="Subject">
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label class="control-label"></label>
-                                            <textarea class="form-control post_content" id="post_content" name="post_content"></textarea>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-ghost-danger" data-bs-dismiss="modal">Discard</button>
-
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-success">Send</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
 
                     <div class="row">
                         <div class="col-md-12">
@@ -385,13 +314,10 @@ $transactions = $transactions_for_today->transactions_for_today();
                                             <tr>
                                                 <th>Agent Name</th>
                                                 <th>Agent Code</th>
-                                                <th>Agent Type</th>
-                                                <th>Contact Phone</th>
-                                                <th>Contact Email</th>
-                                                <th>Total Branches</th>
-                                                <th>Total Tellers</th>
-                                                <th>Total Users</th>
-                                                <th>Agent Status</th>
+                                                <th>Terminal DNA</th>
+                                                <th>Terminal Location</th>
+                                                <th>Total Transactions (Past Three Months)</th>
+                                                <th>Terminal Status</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -400,25 +326,19 @@ $transactions = $transactions_for_today->transactions_for_today();
                                             <tr>
                                                 <th>Agent Name</th>
                                                 <th>Agent Code</th>
-                                                <th>Agent Type</th>
-                                                <th>Contact Phone</th>
-                                                <th>Contact Email</th>
-                                                <th>Total Branches</th>
-                                                <th>Total Tellers</th>
-                                                <th>Total Users</th>
-                                                <th>Agent Status</th>
+                                                <th>Terminal DNA</th>
+                                                <th>Terminal Location</th>
+                                                <th>Total Transactions (Past Three Months)</th>
+                                                <th>Terminal Status</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
                                             <td>Bsystems LTD</td>
                                             <td>SA21563</td>
-                                            <td>Super Agent</td>
-                                            <td>0244875552</td>
-                                            <td>agency@bsystemslimited.com</td>
-                                            <td>15</td>
-                                            <td>18</td>
-                                            <td>25</td>
+                                            <td>1421545745212</td>
+                                            <td>Achimota Mile 7</td>
+                                            <td>58,000.00</td>
                                             <td>Active</td>
                                             <td>
                                                 <div class="dropdown">
@@ -427,11 +347,7 @@ $transactions = $transactions_for_today->transactions_for_today();
                                                     </a>
 
                                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                        <li><a class="dropdown-item" href="manage_agent_branch">Manage Branches</a></li>
-                                                        <li><a class="dropdown-item" href="manage_agent_teller">Manage Tellers</a></li>
-                                                        <li><a class="dropdown-item" href="javascript:void(0):" data-bs-toggle="modal" data-bs-target="#changeThisAgentStatusModal" data-id="20" onclick="change_agency_status(this)">Change Agent Status</a></li>
-                                                        <li><a class="dropdown-item" href="manage_agent_pos">Manage POS Terminal</a></li>
-                                                        <li><a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#mailThisAgentModal" data-id="20" onclick="mail_this_agent(this)">Mail Agent</a></li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0);" onclick="turn_terminal_on_off(this);" data-bs-toggle="modal" data-bs-target="#turn_terminal_on_off" data-id="20">Turn Off/On Terminal</a></li>
                                                         <li><a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#notifyAgentModal" data-id="20" onclick="notify_this_agent(this)">Notify Agent</a></li>
                                                     </ul>
                                                 </div>
@@ -448,7 +364,7 @@ $transactions = $transactions_for_today->transactions_for_today();
                         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header p-3 bg-light">
-                                    <h5 class="modal-title" id="composemodalTitle">Notify This Agent</h5>
+                                    <h5 class="modal-title" id="composemodalTitle">Notify This Terminal</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body" id="notify_this_agent_content_here">
@@ -464,38 +380,17 @@ $transactions = $transactions_for_today->transactions_for_today();
                             </div>
                         </div>
                     </div>
+
                     
-                    
-                    <div class="modal fade" id="mailThisAgentModal" tabindex="-1" role="dialog" aria-labelledby="emailModalTitle" aria-hidden="true">
+
+                    <div class="modal fade" id="turn_terminal_on_off" tabindex="-1" role="dialog" aria-labelledby="turn_terminal_on_off_ModalTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header p-3 bg-light">
-                                    <h5 class="modal-title" id="composemodalTitle">Email This Agent</h5>
+                                    <h5 class="modal-title" id="composemodalTitle">Change This Terminal Status</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <div class="modal-body" id="mail_this_agent_content_here">
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-ghost-danger" data-bs-dismiss="modal">Discard</button>
-
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-success">Send</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="modal fade" id="changeThisAgentStatusModal" tabindex="-1" role="dialog" aria-labelledby="changeThisAgentStatusModalTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header p-3 bg-light">
-                                    <h5 class="modal-title" id="composemodalTitle">Change This Agent Status</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body" id="change_agency_status_content_here">
+                                <div class="modal-body" id="turn_terminal_on_off_content_here">
 
                                 </div>
                             </div>

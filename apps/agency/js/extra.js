@@ -56,3 +56,14 @@ function change_agency_status(itm) {
     }
   );
 }
+
+function turn_terminal_on_off(itm) {
+  let terminal_id = $(itm).attr("data-id");
+
+  $("<div>").load(
+    "apps/agency/view/modals/modal.turn_terminal_off_on.phtml?id=" + terminal_id,
+    function (data) {
+      $("#turn_terminal_on_off_content_here").html(data);
+    }
+  );
+}

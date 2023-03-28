@@ -1,0 +1,26 @@
+<?php
+$terminal_id = $_REQUEST['id'];
+?>
+<div>
+
+    <div class="mb-3">
+        <input type="hidden" class="form-control" id="agent_key" name="agent_key" value="<?php echo $terminal_id; ?>">
+        <select class="form-select mb-3" aria-label="Default select example">
+            <optgroup label="Current Status">
+                <option value="1">Active</option>
+            </optgroup>
+
+            <optgroup label="Change Status">
+                <option value="1">Active</option>
+                <option value="2">Deactivate</option>
+            </optgroup>
+        </select>
+    </div>
+
+</div>
+
+<div class="modal-footer">
+    <div class="btn-group">
+        <button type="submit" class="btn btn-primary">Change</button>
+    </div>
+</div>

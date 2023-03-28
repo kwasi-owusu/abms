@@ -31,11 +31,19 @@
                             Agency Setup
                         </a>
                     </li>
+
                     <li class="nav-item">
                         <a href="manage_agents" class="nav-link" data-key="t-projects">
                             Manage Agents
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a href="manage_agency_pos_terminals" class="nav-link" data-key="t-projects">
+                            Manage POS Terminals
+                        </a>
+                    </li>
+
                     <li class="nav-item">
                         <a href="agency_analytics" class="nav-link" data-key="t-projects">
                             Agency Analytics

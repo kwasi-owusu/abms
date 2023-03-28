@@ -41,7 +41,7 @@ class CTRLLoginUser
         $login_user_tkn  = trim(strip_tags($_POST['tkn']));
 
 
-        require_once dirname(__DIR__, 2) . '/settings/controller/TransactionAccountEnums.php';
+        require_once dirname(__DIR__, 2) . '/settings/enums/TransactionAccountEnums.php';
 
         if (isset($_SESSION['login_tkn']) && $_SESSION['login_tkn'] == $login_user_tkn) {
 
@@ -62,6 +62,7 @@ class CTRLLoginUser
                 echo json_encode($response_msg);
 
                 return;
+
             } elseif (empty($user_email)) {
                 $error = true;
                 $message        = "Email cannot be empty";
@@ -227,7 +228,9 @@ class CTRLLoginUser
                                 $_SESSION['user_access_level']      = isset($user['user_access_level']) ? $user['user_access_level'] : null;
                                 $_SESSION['user_branch']    = isset($user['user_branch']) ? $user['user_branch'] : null;
                                 $_SESSION['user_institution']   = isset($user['user_institution']) ? $user['user_institution'] : null;
+                                $_SESSION['user_key']   = isset($user['$user_key']) ? $user['$user_key'] : null;
                                 $_SESSION["isLogin"] = 1;
+
 
                                 //echo "Login Successful";
 
@@ -241,6 +244,7 @@ class CTRLLoginUser
                                 );
 
                                 echo json_encode($response_msg);
+                                
                             } elseif ($is_agency_active == 1 && $is_branch_active == 1 && $user_access_level == 2) {
                                 //create sessions
 
@@ -251,6 +255,7 @@ class CTRLLoginUser
                                 $_SESSION['email']          = isset($user['email']) ? $user['email'] : null;
                                 $_SESSION['user_access_level']      = isset($user['user_access_level']) ? $user['user_access_level'] : null;
                                 $_SESSION['user_branch']    = isset($user['user_branch']) ? $user['user_branch'] : null;
+                                $_SESSION['user_key']   = isset($user['$user_key']) ? $user['$user_key'] : null;
                                 $_SESSION['user_institution']   = isset($user['user_institution']) ? $user['user_institution'] : null;
                                 $_SESSION["isLogin"] = 1;
 
@@ -302,6 +307,7 @@ class CTRLLoginUser
                             $_SESSION['email']          = isset($user['email']) ? $user['email'] : null;
                             $_SESSION['user_access_level']      = isset($user['user_access_level']) ? $user['user_access_level'] : null;
                             $_SESSION['user_branch']    = isset($user['user_branch']) ? $user['user_branch'] : null;
+                            $_SESSION['user_key']   = isset($user['$user_key']) ? $user['$user_key'] : null;
                             $_SESSION['user_institution']   = isset($user['user_institution']) ? $user['user_institution'] : null;
                             $_SESSION["isLogin"] = 1;
 

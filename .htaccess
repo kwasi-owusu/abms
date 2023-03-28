@@ -5,10 +5,20 @@ ErrorDocument 404 /404.html
 
 RewriteRule ^home(.*)?$ index.php
 
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-l
+
 RewriteRule ^logout(.*)?$ apps/sign_out.php
 
 RewriteRule ^change_password(.*)?$ apps/auth/view/do.change_password.phtml
 
 RewriteRule ^admin(.*)?$ apps/dashboard/view/do.admin.php
 
+RewriteRule ^manage_agent_pos(.*)?$ apps/agency/view/do.manage_agent_pos.phtml
+
 RewriteRule ^agency_master(.*)?$ apps/agency/view/do.agency_master.phtml
+
+
+########### api ######################
+RewriteRule ^api/transaction/v1/cash_in_cash_out(.*)?$ apps/api/transactions/v1/CTRLSaveTransaction.php

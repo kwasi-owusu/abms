@@ -15,6 +15,7 @@ $("#user_loginForm").on("submit", function (e) {
 
   $.ajax({
     url: "apps/auth/controller/CTRLLoginUser.php",
+    
     method: "POST",
     data: new FormData(this),
     contentType: false,
@@ -83,13 +84,16 @@ $("#user_role_frm").on("submit", function (e) {
   $("#loader").show();
   $("#saveBtn").prop("disabled", true);
   e.preventDefault();
+ 
   $.ajax({
     url: "bamboo/controller/users/AddUserRoles.php",
     method: "POST",
     data: new FormData(this),
     contentType: false,
+    dataType: "JSON",
     cache: false,
     processData: false,
+
     success: function (data) {
       $("#submit_output").fadeOut("slow", function () {
         $("#loader").hide();
@@ -109,24 +113,46 @@ $("#user_role_frm").on("submit", function (e) {
 
 $("#update_my_password_frm").on("submit", function (e) {
   $("#loader").show();
-  $("#saveBtnModal").prop("disabled", true);
+  $("#saveBtn").prop("disabled", true);
   e.preventDefault();
+  
   $.ajax({
-    url: "auth/controller/UpdateMyPasswordController.php",
+    url: "apps/auth/controller/CTRLUpdateMyPasswordController.php",
+    
     method: "POST",
     data: new FormData(this),
     contentType: false,
+    dataType: "JSON",
     cache: false,
     processData: false,
+
     success: function (data) {
-      Snackbar.show({
-        text: data,
-        actionTextColor: "#fff",
-        backgroundColor: "#2196f3",
+      $.toast({
+        heading: "Agency Banking",
+        text: data.message,
+        icon: "info",
+        loader: true, // Change it to false to disable loader
+        position: "top-right",
+        loaderBg: "#000", // To change the background
       });
 
       $("#loader").hide();
-      setInterval("location.reload()", 3000);
+
+      if (data.message == "Update Successful" && data.error_code == 111) {
+        setInterval("location.reload()", 3000);
+        window.location = "home";
+      } else if (
+        data.message == "Update Unsuccessful" &&
+        data.error_code == 112
+      ) {
+        setInterval("location.reload()", 3000);
+        window.location = "change_password";
+      } else {
+        $("#loader").hide();
+        $("#saveBtn").prop("disabled", false);
+      }
+
+      //setInterval("location.reload()", 3000);
     },
   });
 });

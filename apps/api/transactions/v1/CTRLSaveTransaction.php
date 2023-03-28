@@ -70,7 +70,7 @@ class CTRLSaveTransactions
             $amount             = isset($data->transaction->amount) ? trim(strip_tags($data->transaction->amount)) : $error = true;
             $narration          = isset($data->transaction->narration) ? trim(strip_tags($data->transaction->narration)) : null;
             $depositor_payee    = isset($data->transaction->depositor_payee) ? trim(strip_tags($data->transaction->depositor_payee)) : $error = true;
-            $product_ID         = isset($data->transaction->product_ID) ? trim(strip_tags($data->transaction->product_ID)) : $error = true;
+            $product_id         = isset($data->transaction->product_id) ? trim(strip_tags($data->transaction->product_id)) : $error = true;
 
 
             //account details
@@ -93,7 +93,7 @@ class CTRLSaveTransactions
             $mobile_transaction_reference  = isset($data->meta_data->mobile_transaction_reference) ? trim(strip_tags($data->meta_data->mobile_transaction_reference)) : $error = true;
             
             $is_agent_active                    = $secure_this_transaction->is_agent_active($agent_key);
-            $is_branch_active                   = $secure_this_transaction->is_branch_active($agent_id, $branch_key);
+            $is_branch_active                   = $secure_this_transaction->is_branch_active($agent_id, $branch_id);
             $is_officer_active                  = $secure_this_transaction->is_officer_active($agent_id, $teller_id);
 
 
@@ -102,10 +102,8 @@ class CTRLSaveTransactions
                 $activity_module            = "Transaction";
                 $activity_desc              = "New Transaction Saved";
 
-                $this_transaction_type = "";
-
-
-                $notification_desc          = "A $this_transaction_type transaction has occurred on your account";
+                
+                $notification_desc          = "A $trans_type transaction has occurred on your account";
                 $notification_type          = "Email";
                 $send_to                    = "";
 
@@ -126,14 +124,14 @@ class CTRLSaveTransactions
 
                 $transaction_reference =  transaction_reference($n);
 
-                $toHashThis                 = $account_name . $account_name . $total_amount;
+                $toHashThis                 = $account_name . $account_name . $amount;
                 $transaction_key            = hash_hmac('sha512', $toHashThis, $transaction_reference);
 
                 //check transaction type
-                if ($trans_type  == 'cash-in') {
+                if ($trans_type  == 'cr') {
 
                     //check branch balance
-                    $has_branch_got_enough_balance      = $secure_this_transaction->has_branch_got_enough_balance($agency_id, $branch_id);
+                    $has_branch_got_enough_balance      = $secure_this_transaction->has_branch_got_enough_balance($agent_id, $branch_id);
                     $fetch_branch_balance = $has_branch_got_enough_balance->fetch(PDO::FETCH_ASSOC);
                     $branch_bal = $fetch_branch_balance['amt'];
 
@@ -152,22 +150,7 @@ class CTRLSaveTransactions
                         echo json_encode($response_msg);
 
                         //create activity
-                        $activities = array(
-
-                            'actions' => "Transaction Activity. Insufficient branch funds " . $transaction_key,
-                            'status' => 'Failed',
-                            'usernames' => $teller_id
-                        );
-
-                        $activity_desc = json_encode($activities);
-
-                        $activity_data = array(
-                            'activity_module' => 'User Login',
-                            'activity_desc' => $activity_desc,
-                            'user_id' => $teller_id
-                        );
-
-                        $save_activities = $login_obj->userActivitiesMDL($activity_data);
+                       
 
                         return;
                     }
@@ -180,7 +163,7 @@ class CTRLSaveTransactions
                 if ($is_transaction_allowed == 1 && $is_transaction_allowed_for_agent == 1 && !$error) {
 
                     //post transaction
-                    $data = array(
+                    $data_b = array(
                         'trans_cat' => $trans_cat,
                         'trans_type' => $trans_type,
                         'customer_name' => $customer_name,
@@ -188,7 +171,7 @@ class CTRLSaveTransactions
                         'id_type' => $id_type,
                         'narration' => $narration,
                         'depositor_payee' => $depositor_payee,
-                        'product_ID' => $product_ID,
+                        'product_id' => $product_id,
                         'account_number' => $account_number,
                         'account_name' => $account_name,
                         'card_expiry_date' => $card_expiry_date,
@@ -198,7 +181,11 @@ class CTRLSaveTransactions
                         'teller_id' => $teller_id,
                         'teller_name' => $teller_name,
                         'transaction_date' => $transaction_date,
-                        'mobile_transaction_reference' => $mobile_transaction_reference
+                        'mobile_transaction_reference' => $mobile_transaction_reference,
+                        'branch_id' => $branch_id,
+                        'agent_id' => $agent_id,
+                        'transaction_key' => $transaction_key,
+                        'amount' => $amount,
                     );
 
                     $newPDO = new ConnectDatabase();
@@ -206,16 +193,17 @@ class CTRLSaveTransactions
 
                     $instanceOfCTRLCashInOutTransaction = new CTRLCashInOutTransaction('transactions_tbl', 'user_activities', 'notifications', 'agency_branches', 'agency_setup', 'abms_users', 'geneal_settings', 'tip', 'commission', 'dr_cr_safe', 'e_cash_transaction', 'balance_tbl', $newPDO, $thisPDO);
                     //$this->transactions_tbl
-                    $rslt = $instanceOfCTRLCashInOutTransaction->save_cash_in_cash_out_transaction($table_a);
+                    
+                    if ($instanceOfCTRLCashInOutTransaction->save_cash_in_cash_out_transaction($data_b)) {
 
-                    if ($rslt == true) {
+                        echo "Successfully";
 
-                        //pass transaction advice to peoplespay
-
+                        //push to peoples pay
 
                     }
                 }
             }
+            
         } else {
             $error          = true;
             $message        = "Action not permitted 1";
