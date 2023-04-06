@@ -72,12 +72,13 @@ class CTRLSaveTransactions
             $depositor_payee    = isset($data->transaction->depositor_payee) ? trim(strip_tags($data->transaction->depositor_payee)) : $error = true;
             $product_id         = isset($data->transaction->product_id) ? trim(strip_tags($data->transaction->product_id)) : $error = true;
 
-
             //account details
             $account_number     = isset($data->account_details->account_number) ? trim(strip_tags($data->account_details->account_number)) : $error = true;
             $account_name       = isset($data->account_details->account_name) ? trim(strip_tags($data->account_details->account_name)) : $error = true;
             $card_expiry_date   = !isset($data->account_details->card_expiry_date) && $trans_type == 'cash-out' ? $error = true : $error = false;
             $cvv                = !isset($data->account_details->cvv) && $trans_type == 'cash-out' ? $error = true : $error = false;
+            $issuer_id          = isset($data->account_details->issuer_id) ? trim(strip_tags($data->account_details->issuer_id)) : null;
+            $account_type       = isset($data->account_details->account_type) ? trim(strip_tags($data->account_details->account_type)) : null;
 
 
             $transaction_hash_key       = TransactionHashKeys::save_transaction->value;
@@ -91,7 +92,7 @@ class CTRLSaveTransactions
             //meta details
             $transaction_date       = isset($data->meta_data->transaction_date) ? trim(strip_tags($data->meta_data->transaction_date)) : $error = true;
             $mobile_transaction_reference  = isset($data->meta_data->mobile_transaction_reference) ? trim(strip_tags($data->meta_data->mobile_transaction_reference)) : $error = true;
-            
+
             $is_agent_active                    = $secure_this_transaction->is_agent_active($agent_key);
             $is_branch_active                   = $secure_this_transaction->is_branch_active($agent_id, $branch_id);
             $is_officer_active                  = $secure_this_transaction->is_officer_active($agent_id, $teller_id);
@@ -102,7 +103,7 @@ class CTRLSaveTransactions
                 $activity_module            = "Transaction";
                 $activity_desc              = "New Transaction Saved";
 
-                
+
                 $notification_desc          = "A $trans_type transaction has occurred on your account";
                 $notification_type          = "Email";
                 $send_to                    = "";
@@ -150,7 +151,24 @@ class CTRLSaveTransactions
                         echo json_encode($response_msg);
 
                         //create activity
-                       
+
+                        return;
+                    }
+                    // require bank issuer id
+                    if ($issuer_id == null && $account_type !== "bank") {
+                        $error          = true;
+                        $message        = "Bank Issuer not Identified";
+                        $error_code     = 112;
+
+                        $response_msg   = array(
+                            'error' => true,
+                            'message' => $message,
+                            'error_code' => $error_code
+                        );
+
+                        echo json_encode($response_msg);
+
+                        //create activity
 
                         return;
                     }
@@ -192,18 +210,263 @@ class CTRLSaveTransactions
                     $thisPDO = $newPDO->Connect();
 
                     $instanceOfCTRLCashInOutTransaction = new CTRLCashInOutTransaction('transactions_tbl', 'user_activities', 'notifications', 'agency_branches', 'agency_setup', 'abms_users', 'geneal_settings', 'tip', 'commission', 'dr_cr_safe', 'e_cash_transaction', 'balance_tbl', $newPDO, $thisPDO);
-                    //$this->transactions_tbl
-                    
+
                     if ($instanceOfCTRLCashInOutTransaction->save_cash_in_cash_out_transaction($data_b)) {
 
-                        echo "Successfully";
+                        //make a call to peoplespay 
 
-                        //push to peoples pay
+                        $operation = '';
+                        if ($trans_type == "cr") {
+                            $operation .= 'CREDIT';
+                        } else if ($trans_type == "dr") {
+                            $operation .= 'DEBIT';
+                        }
 
+
+                        $get_token_data = array(
+                            "merchantId" => "63b59e41530aeeaec59a045f",
+                            "apikey" => "93064247-4668-4c73-ac43-4dcc28773a86",
+                            "operation" => $operation
+                        );
+
+
+                        // convert the PHP array to JSON format
+                        $get_token_payload_in_json = json_encode($get_token_data);
+
+                        // create & initialize a curl session 
+                        $crl = curl_init();
+                        // set our url with curl_setopt() 
+                        curl_setopt($crl, CURLOPT_URL, "https://peoplespay.com.gh/peoplepay/hub/token/get");
+
+                        curl_setopt($crl, CURLOPT_POST, true);
+                        curl_setopt($crl, CURLOPT_POSTFIELDS, $get_token_payload_in_json);
+                        curl_setopt($crl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+                        curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
+
+                        curl_setopt($crl, CURLOPT_SSL_VERIFYHOST, false);
+                        curl_setopt($crl, CURLOPT_SSL_VERIFYPEER, false);
+
+                        $token_response = curl_exec($crl);
+
+                        curl_close($crl);
+
+                        if ($token_response === false) {
+                            echo 'Error: ' . curl_error($crl);
+                        } else {
+
+                            //decode and convert response to array
+                            $token_response_to_array = json_decode($token_response);
+
+                            $get_token = $token_response_to_array->data;
+
+                            //echo $token_response_to_array->data;
+
+                            if (isset($get_token)) {
+
+                                //make request to peoplesPay 
+                                // if transaction is dr, use collection
+                                // if transaction is cr, use disbursement
+
+                                $base_ur = "https://peoplespay.com.gh/peoplepay/hub/";
+                                $transaction_based_url = "";
+
+                                if ($trans_type  == 'cr' && !$error) {
+
+                                    $transaction_based_url .= "disburse";
+
+                                    $disburse_pmt_payload = array(
+                                        "amount" => $amount,
+                                        "account_number" => $account_number,
+                                        "account_name" => $account_name,
+                                        "account_issuer" => $issuer_id,
+                                        "account_type" => $account_type,
+                                        "description" => $narration,
+                                        "externalTransactionId" => $transaction_key
+                                    );
+
+                                    $disburse_pmt_payload_in_json = json_encode($disburse_pmt_payload);
+
+                                    $authorization = "Authorization: Bearer " . $get_token;
+                                    $full_url = $base_ur . $transaction_based_url;
+
+                                    $crl_b = curl_init();
+                                    // set our url with curl_setopt() 
+                                    curl_setopt($crl_b, CURLOPT_URL, "https://peoplespay.com.gh/peoplepay/hub/" . $transaction_based_url);
+
+                                    curl_setopt($crl_b, CURLOPT_POST, true);
+                                    curl_setopt($crl_b, CURLOPT_POSTFIELDS, $disburse_pmt_payload_in_json);
+                                    curl_setopt($crl_b, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $authorization));
+                                    //curl_setopt($crl_b, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+                                    curl_setopt($crl_b, CURLOPT_RETURNTRANSFER, true);
+
+                                    curl_setopt($crl_b, CURLOPT_SSL_VERIFYHOST, false);
+                                    curl_setopt($crl_b, CURLOPT_SSL_VERIFYPEER, false);
+
+                                    $transaction_response = curl_exec($crl_b);
+
+                                    $transaction_response_to_array = json_decode($transaction_response);
+
+                                    $get_transaction_response_code = $transaction_response_to_array->code;
+                                    $external_transaction_id = $transaction_response_to_array->transactionId;
+
+                                    $transaction_status = '';
+
+                                    if ($get_transaction_response_code == "00") {
+
+                                        // transaction was successful
+                                        $transaction_status .= "1";
+                                        if ($instanceOfCTRLCashInOutTransaction->update_status_after_transaction($data_b, $transaction_status, $external_transaction_id, $get_transaction_response_code)) {
+
+                                            $message        = "Transaction Success";
+                                            $error_code     = 111;
+                                            $paid_status    = "00";
+                                            $response_msg   = array(
+                                                'error' => false,
+                                                'message' => $message,
+                                                'error_code' => $error_code,
+                                                'paid_status' => $paid_status,
+                                                'external_transaction_id' => $external_transaction_id
+                                            );
+
+                                            echo json_encode($response_msg);
+
+                                            //create activity
+
+                                            return;
+                                        }
+                                    } else if ($get_transaction_response_code !== "00") {
+
+                                        // transaction failed. credit merchant accounts
+                                        $transaction_status .= "2";
+                                        if ($instanceOfCTRLCashInOutTransaction->update_status_after_transaction($data_b, $transaction_status, $external_transaction_id, $get_transaction_response_code)) {
+                                            echo "Transaction Failed";
+
+                                            $error          = true;
+                                            $message        = "Transaction Failed";
+                                            $error_code     = 112;
+                                            $paid_status    = 01;
+                                            $response_msg   = array(
+                                                'error' => true,
+                                                'message' => $message,
+                                                'error_code' => $error_code,
+                                                'paid_status' => $paid_status
+                                            );
+
+                                            echo json_encode($response_msg);
+
+                                            //create activity
+
+                                            return;
+                                        }
+                                    }
+
+                                    curl_close($crl_b);
+                                } else if ($trans_type  == 'dr'  && !$error) {
+                                    $dr_transaction_based_url .= "collectmoney/card";
+
+                                    $collect_money_payload = array(
+                                        "amount" => $amount,
+                                        "description" => $narration,
+                                        "account_name" => $account_name,
+                                        "card" => array(
+                                            "cvc" => $cvv,
+                                            "expiry" => $card_expiry_date,
+                                            "number" => $account_number
+                                        ),
+                                        "description" => $narration,
+                                        "callbackUrl" => "",
+                                        "clientRedirectUrl" => ""
+                                    );
+
+                                    $collect_money_payload_in_json = json_encode($collect_money_payload);
+
+                                    $dr_authorization   = "Authorization: Bearer " . $get_token;
+
+                                    $crl_c = curl_init();
+                                    // set our url with curl_setopt() 
+                                    curl_setopt($crl_c, CURLOPT_URL, "https://peoplespay.com.gh/peoplepay/hub/" . $dr_transaction_based_url);
+
+                                    curl_setopt($crl_c, CURLOPT_POST, true);
+                                    curl_setopt($crl_c, CURLOPT_POSTFIELDS, $collect_money_payload_in_json);
+                                    curl_setopt($crl_c, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $dr_authorization));
+
+                                    curl_setopt($crl_c, CURLOPT_RETURNTRANSFER, true);
+
+                                    curl_setopt($crl_c, CURLOPT_SSL_VERIFYHOST, false);
+                                    curl_setopt($crl_c, CURLOPT_SSL_VERIFYPEER, false);
+
+                                    $dr_transaction_response = curl_exec($crl_c);
+
+                                    $dr_transaction_response_to_array = json_decode($dr_transaction_response);
+
+                                    $get_transaction_response_code = $dr_transaction_response_to_array->code;
+                                    $dr_external_transaction_id = $dr_transaction_response_to_array->transactionId;
+
+                                    $dr_transaction_status = '';
+
+                                    if ($get_transaction_response_code == "00") {
+
+                                        // transaction was successful
+                                        $dr_transaction_status .= "1";
+                                        if ($instanceOfCTRLCashInOutTransaction->update_status_after_transaction($data_b, $dr_transaction_status, $dr_external_transaction_id, $get_transaction_response_code)) {
+
+                                            // credit agency account for a dr transaction 
+
+
+                                            $message        = "Transaction Success";
+                                            $error_code     = 111;
+                                            $paid_status    = "00";
+                                            $response_msg   = array(
+                                                'error' => false,
+                                                'message' => $message,
+                                                'error_code' => $error_code,
+                                                'paid_status' => $paid_status,
+                                                'external_transaction_id' => $dr_external_transaction_id
+                                            );
+
+                                            echo json_encode($response_msg);
+
+                                            //create activity
+
+                                            return;
+                                        }
+                                    } else if ($get_transaction_response_code !== 00) {
+
+                                        // transaction failed. credit merchant accounts
+                                        $transaction_status .= "2";
+                                        if ($instanceOfCTRLCashInOutTransaction->update_status_after_transaction($data_b, $transaction_status, $external_transaction_id, $get_transaction_response_code)) {
+                                            echo "Transaction Failed";
+
+                                            $error          = true;
+                                            $message        = "Transaction Failed";
+                                            $error_code     = 112;
+                                            $paid_status    = '01';
+                                            $response_msg   = array(
+                                                'error' => true,
+                                                'message' => $message,
+                                                'error_code' => $error_code,
+                                                'paid_status' => $paid_status
+                                            );
+
+                                            echo json_encode($response_msg);
+
+                                            //create activity
+
+                                            return;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+
+                        // close curl resource to free up system resources and (deletes the variable made by curl_init) 
+
+                    } else {
+                        echo "Failed";
                     }
                 }
             }
-            
         } else {
             $error          = true;
             $message        = "Action not permitted 1";

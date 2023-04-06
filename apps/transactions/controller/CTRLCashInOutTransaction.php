@@ -51,30 +51,76 @@ class CTRLCashInOutTransaction extends MDLSaveTransactions
             $thisPDO->beginTransaction();
 
             //save transaction information
-            $instanceOfMDLSaveTransactions->saveTransactionMDL($data_b, $this->transactions_tbl);
+            $rsp_st = $instanceOfMDLSaveTransactions->saveTransactionMDL($data_b, $this->transactions_tbl);
 
             // create activity log
             //$create_activity_log = $instanceOfMDLSaveTransactions->create_activity_log($data_b, $this->user_activities);
 
             //create a tip record
-            $instanceOfMDLSaveTransactions->create_tip_log($data_b, $this->tip);
+            $rsp_ct = $instanceOfMDLSaveTransactions->create_tip_log($data_b, $this->tip);
 
             $transaction_type = $data_b['trans_type'];
 
-            if ($transaction_type == "cr") {
+            if ($transaction_type == 'cr') {
                 //debit agent to credit customer account
                 $instanceOfMDLSaveTransactions->debit_agent_branch($data_b, $this->balance_tbl);
-            } else if ($transaction_type == 'dr') {
-                //credit agent after debiting customer account
-                $instanceOfMDLSaveTransactions->credit_agent_branch($data_b, $this->balance_tbl);
             }
 
+            //credit agent after debiting customer account
+            // else if ($transaction_type == 'dr') {
+
+            //     $instanceOfMDLSaveTransactions->credit_agent_branch($data_b, $this->balance_tbl);
+            // }
+
             $thisPDO->commit();
+
+            return $rsp_st;
         } catch (PDOException $e) {
 
             $thisPDO->rollback();
 
-            echo $e->getMessage();
+            echo "Failed";
+        }
+    }
+
+    public function update_status_after_transaction($data_b, $transaction_status, $external_transaction_id, $get_transaction_response_code)
+    {
+        $newPDO = new ConnectDatabase();
+        $thisPDO = $newPDO->Connect();
+
+        $instanceOfMDLSaveTransactions = new MDLSaveTransactions($newPDO, $thisPDO);
+
+        try {
+
+            $thisPDO->beginTransaction();
+
+            //save transaction information
+            $rsp_st     = $instanceOfMDLSaveTransactions->update_transaction_status($data_b, $this->transactions_tbl, $transaction_status, $external_transaction_id);
+
+            $rsp_stt    = $instanceOfMDLSaveTransactions->update_transaction_status_in_tip_tbl($data_b, $this->tip, $transaction_status);
+
+            // create activity log
+            //$create_activity_log = $instanceOfMDLSaveTransactions->create_activity_log($data_b, $this->user_activities);
+
+            //if cr transaction failed, credit the agent balance to reverse the earlier debit
+            if($get_transaction_response_code !== '00' && $data_b['trans_type'] == 'cr'){
+                $credit_after_failed_cr = $instanceOfMDLSaveTransactions->credit_agent_branch($data_b, $this->balance_tbl);
+            }
+
+            //create agent balance
+            if($data_b['trans_type'] == 'dr' && $get_transaction_response_code == '00'){
+                $crd = $instanceOfMDLSaveTransactions->credit_agent_branch($data_b, $this->balance_tbl);
+            }
+
+
+            $thisPDO->commit();
+
+            return $rsp_st;
+        } catch (PDOException $e) {
+
+            $thisPDO->rollback();
+
+            echo "Failed";
         }
     }
 }

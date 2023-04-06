@@ -21,7 +21,7 @@ class MDLSaveTransactions
         id_number, account_name, account_number, agency_branch, agency_id, transaction_reference, transaction_key, depositor_payee) 
         VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-        $stmt->execute(array(
+        if ($stmt->execute(array(
             $data_b['trans_cat'],
             $data_b['trans_type'],
             $data_b['product_id'],
@@ -38,7 +38,11 @@ class MDLSaveTransactions
             $data_b['transaction_key'],
             $data_b['depositor_payee']
 
-        ));
+        ))) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     //create activity log
@@ -46,13 +50,17 @@ class MDLSaveTransactions
     {
         //save notification
         $stmt = $this->thisPDO->prepare("INSERT INTO $table_a(notification_desc, notification_type, send_to)) VALUES(?, ?, ?)");
-        $stmt->execute(
+        if ($stmt->execute(
             array(
                 $data_b['notification_desc'],
                 $data_b['notification_type'],
                 $data_b['send_to']
             )
-        );
+        )) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     //create tip log
@@ -60,12 +68,16 @@ class MDLSaveTransactions
     {
         $stmt = $this->thisPDO->prepare("INSERT INTO $table_a(transaction_reference, amount)
         VALUES(?, ?)");
-        $stmt->execute(
+        if ($stmt->execute(
             array(
                 $data_b['transaction_key'],
                 $data_b['amount']
             )
-        );
+        )) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
@@ -75,7 +87,12 @@ class MDLSaveTransactions
         $stmt->bindParam('mt', $data_b['amount'], PDO::PARAM_STR);
         $stmt->bindParam('agd', $data_b['agent_id'], PDO::PARAM_STR);
         $stmt->bindParam('brn', $data_b['branch_id'], PDO::PARAM_STR);
-        $stmt->execute();
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function credit_agent_branch($data_b, $table_a)
@@ -84,6 +101,36 @@ class MDLSaveTransactions
         $stmt->bindParam('mt', $data_b['amount'], PDO::PARAM_STR);
         $stmt->bindParam('agd', $data_b['agent_id'], PDO::PARAM_STR);
         $stmt->bindParam('brn', $data_b['branch_id'], PDO::PARAM_STR);
-        $stmt->execute();
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function update_transaction_status($data_b, $table_a, $transaction_status, $external_transaction_id){
+        $stmt = $this->thisPDO->prepare("UPDATE $table_a SET transaction_status = :ts, external_transaction_id = :exd WHERE transaction_key = :tk");
+        $stmt->bindParam(':ts', $transaction_status, PDO::PARAM_STR);
+        $stmt->bindParam(':exd', $external_transaction_id, PDO::PARAM_STR);
+        $stmt->bindParam(':tk', $data_b['transaction_key'], PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function update_transaction_status_in_tip_tbl($data_b, $table_a, $transaction_status){
+        $stmt = $this->thisPDO->prepare("UPDATE $table_a SET transaction_status = :ts WHERE transaction_reference = :tr");
+        $stmt->bindParam(':ts', $transaction_status, PDO::PARAM_STR);
+        $stmt->bindParam(':tr', $data_b['transaction_key'], PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
